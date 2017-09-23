@@ -1,8 +1,6 @@
 # tzLib
 
 
-THIS LIBRARY 
-
 	- 	Configures a device's local time settings each time the device reboots.
 	-	Performs transitions to and from daylight-savings time at the
 		appropriate time.
@@ -23,8 +21,8 @@ HOW THE LIBRARY WORKS
 	-	Using an IANA defined time zone ID, tzLib retrieves the JSON file 
 		that is appropriate for the device. The JSON file provides four
 		data elements:
-				1. 	The time zone's standard offset. <-- This never changes
-				2.	The time zone's current offset. <-- Changes with DST
+				1.  The time zone's standard offset. <-- This never changes
+				2.  The time zone's current offset. <-- Changes with DST
 				3.  The time of the next DST transition <--Epoch Seconds UCT
 				4.  The current offset after the next DST transition.
 	-	After downloading and parsing the JSON file, tzLib updates the devices
