@@ -19,8 +19,10 @@ void setup() {
                 */  
                 
     Serial.begin(9600);
-    for (int i = 10; i > 0; i--) {  //  <-- Wait for a serial console user to connect.
-        Serial.print("\rStarting in " + String(i) + " Seconds ... ");
+    for (int i = 12; i > 0; i--) {  //  <-- Wait for a serial console user to connect.
+        Serial.print("\rStarting in ");
+        Serial.print(String(i));
+        Serial.print(" Seconds ... ");
         delay(1000);
     }
     Serial.println("\r                                   \r");   
@@ -94,4 +96,27 @@ Data Retrieved from HTTP Server:
 The current time in this time zone is: Wed Sep 20 20:12:23 2017
 
 -------------------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
