@@ -233,10 +233,16 @@ QUERY AND TEST METHODS ========================================================
 			-	If timezone data is not maintained at the default location (0)
 				in EEPROM, the appropriate tzSetEepromLocation() statement must
 				be executed before this method is invoked. This method does a 
-				validation to help prevent erasure of the wrong data, bbut it's
+				validation to help prevent erasure of the wrong data, but it's
 				best not to tempt fate.
 			-	Developers will find this method handy as they validate that
 				default time zone ID settings work as expected.
+			-	This method is FOR DEVELOPMENT AND TEST USAGE ONLY. tzLib will
+				not work properly if it is left in your final code. For 
+				example, tzLoop will not know when to perform DST transitions. 
+				tzSetup will revert to the default time zone ID on each 
+				reboot, and won't even have time zone offset information if the
+				network is down. USE THIS METHOD WITH CAUTION !!!
 		Syntax:
 			-	tzWipeEEPROM();
 		
