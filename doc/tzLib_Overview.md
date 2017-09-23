@@ -60,7 +60,7 @@
 	
 	
 	
-	------------------ How do IOT devices obtain the data? --------------------
+	------------------ How does tzLib obtain the data? --------------------
 	
 	The Java program formats the data it extracts into JSON files. One file is
 	generated for each time zone, and the name of the file is the IANA defined
@@ -69,35 +69,7 @@
 	tzLib GETs the JSON data with the help of another library  "HttpClient",
 	which uses economical and well tested code.
 
-	///////////////////////////////////////////////////////////////////////////
-
-								IMPORTANT NOTE
-
-	At the present time, there is no HTTP server hosting the tzLib JSON
-	files on the internet. I am searching for an IOT vendor or another company 
-	who has a real interest in IOT to host the data. Please let me know if you
-	have any contacts.
 	
-	In the mean time, and for those want/need to have their own HTTP server, I
-	can offer three options. From easiest to most complicated ... 
-	
-		1. 	You can install Oracle's Virtual Box on a Windows or Linux system,
-			download the .OVA file containing an image of the virtual machine
-			that hosts my Ubuntu Linux/Apache HTTP Server, fire it up, and make
-			a few minor tweaks related to password and the IP address. 
-			
-			OVA is an open format, so my virtual machine should also run on
-			other hypervisors (like VMware, KVM, or HyperV) but no testing has
-			been done.
-			
-		2.	You can create your own HTTP server, and use the .JAR file to
-			to populate the JSON data. 
-			
-		3.	You can start with the Java program, create your own .JAR file,
-			and go on from there. If you do this, make sure you use Java 8
-			or above. 
-			
-	///////////////////////////////////////////////////////////////////////////
 	
 	
 		----------------- What does tzLib do with the data? -------------------
