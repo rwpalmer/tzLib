@@ -1,120 +1,65 @@
 # tzLib
 
 
-      tzLib manages local time settings and DST transitions for IOT devices.
+THIS LIBRARY 
+
+	- 	Configures a device's local time settings each time the device reboots.
+	-	Performs transitions to and from daylight-savings time at the
+		appropriate time.
+	-	Is designed for implementation in firmware.
+	-	Consumes very few device resources
+	-	Uses time zone offset and DST transition data that has been prestaged
+		on an HTTP Server. 
 
 
-	  ----------------------------- Background ---------------------------------- 
+HOW THE LIBRARY WORKS 
 
-	Local time settings are a function of geography and the policy of the
-	governments that rule over that geography. Any government body (be it a
-	nation, a state or province, a county, or even a city can decide that 
-	resetting the clocks in their domain would make life better for
-	the citizenry working and residing there. Common reasons for such a
-	determination relate to agriculture, safety, and commerce. Regardless of
-	the reason, a government can adopt a different time zone or use daylight 
-	savings time (DST) to reset their clocks. The point is: Local time is not 
-	static. It can, and does change from time to time.
+	-	IANA maintains the time zone database that communication companies
+		and OS vendors use to manage local time world wide. This project uses
+		a Java program to tap into this database. This Java generates a JSON
+		file for every IANA defined time zone (over 600 worldwide). The JSON 
+		files are written directly to an HTTP Server, and these files are
+		refreshed daily. 
+	-	Using an IANA defined time zone ID, tzLib retrieves the JSON file 
+		that is appropriate for the device. The JSON file provides four
+		data elements:
+				1. 	The time zone's standard offset. <-- This never changes
+				2.	The time zone's current offset. <-- Changes with DST
+				3.  The time of the next DST transition <--Epoch Seconds UCT
+				4.  The current offset after the next DST transition.
+	-	After downloading and parsing the JSON file, tzLib updates the devices
+		time zone settings and stores the time zone ID along with the 
+		downloaded data elements in the devices EEPROM. This assures that the
+		data will be available for future reboots even if there is no
+		network connectivity at that time. 
+	-	The above is all done in the Setup() portion of firmware. In the 
+		firmwares loop(), tzLib compares the current epoch time UCT to the next
+		DST transition time. When that time comes, the transition will be
+		performed. tzLib also compares the current epoch time UCT to a refresh
+		calculated refresh time. When that time comes, fresh JSON data will
+		be downloaded, and the devices EEPROM will be updated if new data 
+		exists. Refreshing is performed ~ every three weeks for time zones
+		with DST, and ~ every nine weeks for fixed time zones.
 	
-	In addition to administering internet domain names and IP addresses, the 
-	IANA (Internet Assigned Numbers Authority) maintains a time zone database
-	that is used by communications and computer companies to administer local
-	time world wide. The database is a collection of rules that specify how
-	to calculate local time for a geography given a specific date in time, 
-	be it in the past, the present, or the future. This database is updated
-	periodically, often multiple times a year.  If you want more information
-	please go to www.iana.org.
-	
-	IANA's database is the most authoritative database around, and it would be 
-	possible to write a program to access it directly. However, that program
-	would be incredibly complex, and such a program would NEVER fit on an IOT 
-	device. To create this library, we needed to find a way to extract the
-	data that IOT devices need, and to make it available to them.
-	
-	Linux and other OS vendors, like Microsoft and Apple have done the heavy
-	lifting for us. They use the data for their own time management, and to
-	to support time libraries for application developers.  Even so, 
-	extracting the data needed for IOT devices was still a daunting task until
-	Oracle released Java 8 and ZoneRules. With the ZoneRules library, we can 
-	easily extract the IANA data that IOT devices need. 
+
+CURRENT STATE OF THE PROJECT
+
+	-	Library components and example code are in the final stages of alpha
+		testing.
+	-	No known bugs exist at this time.
+	-	Code reviews with other developers have not been performed. 
+	-	The library has only been tested on the Particle Photon.
+	-	Documentation has not been reviewed for spelling, grammer or accuracy.
+	-	Testing has only been performed with an HTTP Server running in a
+		virtual machine that is hosted on the developers laptop via Oracle's 
+		Virtual Box. 
+	-	NO HTTP SERVER HOSTS THE REQUIRED JSON FILES ON THE INTERNET AT THIS
+		TIME, but the author can provide an OVA file so testers can run a copy
+		of the HTTP server he is using. 
+	-	If any one is willing to help with the project, please contact the 
+		author/maintainer. 
 
 
 
-	---------------- How does tzLib acquire the data required -----------------
-	----------------- to manage local time on an IOT device? ------------------
-	
-	A Java program generates extracts IANA data from the OS it runs on to
-	answer the following questions:
-	
-		What is the standard time zone offset for my time zone?
-		What is the current time zone offset for my time zone?
-		When is the next DST transition for my time zone?
-		What will the time zone offset be after the next DST transition?
-	
-		The returned data can be used to answer other questions for example:
-		-	"What is the current DST Offset?": can be computed by subtracting 
-			the standard offset from the current offset.
-		-	"Is the current time STD or DST?": can be computed by comparing 
-			the current offset to the standard offset. When the two match,
-			time is STD. When they differ, time is DST. 
-	
-	
-	
-	------------------ How do IOT devices obtain the data? --------------------
-	
-	The Java program formats the data it extracts into JSON files. One file is
-	generated for each time zone, and the name of the file is the IANA defined
-	time zone ID.
 
-	tzLib GETs the JSON data with the help of another library  "HttpClient",
-	which uses economical and well tested code.
 
-	///////////////////////////////////////////////////////////////////////////
-
-								IMPORTANT NOTE
-
-	At the present time, there is no HTTP server hosting the tzLib JSON
-	files on the internet. I am searching for an IOT vendor or another company 
-	who has a real interest in IOT to host the data. Please let me know if you
-	have any contacts.
-	
-	In the mean time, and for those want/need to have their own HTTP server, I
-	can offer three options. From easiest to most complicated ... 
-	
-		1. 	You can install Oracle's Virtual Box on a Windows or Linux system,
-			download the .OVA file containing an image of the virtual machine
-			that hosts my Ubuntu Linux/Apache HTTP Server, fire it up, and make
-			a few minor tweaks related to password and the IP address. 
-			
-			OVA is an open format, so my virtual machine should also run on
-			other hypervisors (like VMware, KVM, or HyperV) but no testing has
-			been done.
-			
-		2.	You can create your own HTTP server, and use the .JAR file to
-			to populate the JSON data. 
-			
-		3.	You can start with the Java program, create your own .JAR file,
-			and go on from there. If you do this, make sure you use Java 8
-			or above. 
-			
-	///////////////////////////////////////////////////////////////////////////
-	
-	
-		----------------- What does tzLib do with the data? -------------------
-
-	Once tzLib has received the JSON file, tzLib parses the JSON and updates 
-	the devices EEPROM if any new data is received. The devices local time 
-	settings are then updated. 
-		For the Particle Photon, this involves setting
-			Time.zone() is set to the current offset
-			Time.setDSTOffset() is set to ( the current - the standard offset)
-			Time.endDST () is invoked if DSTOffset is 0
-			Time.beginDST() is invoked DSTOffset is not 0
-	
-	For time zones that have DST, tzLib will also reset the local time settings
-	when the next DST transition time is reached.
-	
-	Since it may be a long time between reboots, tzLib validates EEPROM data
-	periodically. This will assure that EEPROM data accurately reflects any
-	IANA database changes, and that DST transition data is updated after each
-	transition occurs. 
