@@ -228,21 +228,17 @@ QUERY AND TEST METHODS ========================================================
 	tzWipeEEPROM() ------------------------------------------------------------
 	
 		Function and Usage:
-			-	This method allows developers to erase the time zone offset and 
-				DST transition data from the EEPROM.
-			-	If timezone data is not maintained at the default location (0)
-				in EEPROM, the appropriate tzSetEepromLocation() statement must
-				be executed before this method is invoked. This method does a 
-				validation to help prevent erasure of the wrong data, but it's
-				best not to tempt fate.
-			-	Developers will find this method handy as they validate that
-				default time zone ID settings work as expected.
-			-	This method is FOR DEVELOPMENT AND TEST USAGE ONLY. tzLib will
-				not work properly if it is left in your final code. For 
-				example, tzLoop will not know when to perform DST transitions. 
-				tzSetup will revert to the default time zone ID on each 
-				reboot, and won't even have time zone offset information if the
-				network is down. USE THIS METHOD WITH CAUTION !!!
+			-	This method is FOR DEVELOPMENT AND TEST USAGE ONLY. It should 		never exist in final code.
+			-	When used, tzWipeEEPROM must always execute before tzSetup. In 		this location, tzSetup will reconfigure the EEPROM using the
+				default time zone ID each time the system boots. Any time zone ID changes that were made in real-time will be lost.
+			-	This method allows developers to erase the time zone and 
+				DST transition data from the EEPROM for testing purposes. This
+				makes it easy to validate default settings and the overall
+				OOB (Out of Box) experience. 
+			-	If timezone data is not maintained at the default EEPROM 			location (0), the desired tzSetEepromLocation() statement must
+				be executed before this method is invoked. While this method
+				contains logic to reduce the chances of erasing of the wrong data, one should use care. 
+
 		Syntax:
 			-	tzWipeEEPROM();
 		
