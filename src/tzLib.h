@@ -17,7 +17,7 @@ typedef struct {
 
 // Methods --------------------------------------------------------
 
-    void tzSetup(char* = NULL);
+    int tzSetup(char* = NULL); // <-- Note: tzSetup accepts a "time zone ID" as an optional arguement, when not provided, the arguement is NULL.
     void tzLoop();
     tzInfo_t tzGetInfo();
     char* tzGetSetupReturnMsg();

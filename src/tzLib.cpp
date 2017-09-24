@@ -1,7 +1,7 @@
 #include "tzLib.h"
 //#define LOGGING true      // <-- For debugging, enable a serial console and remove the shashes at the beginning of this line
                                             // tzLoop() periodically calls tzSetup() to validate / refresh the tzInfo stored in EEPROM. 
-const time_t tzRefreshInterval = 1723680;   // <-- This determines the interval between refreshes. (~3 weeks)
+const  tzRefreshInterval = 1723680;   // <-- This determines the interval between refreshes. (~3 weeks)
 const time_t tzRetryInterval =  40000;      // <-- This determines the interval between retries if a refresh fails (~ 11 hours) 
 static time_t tzRefreshTime;                // <-- this variable contains the epoch time for the next EEPROM refresh
 static tzInfo_t eeprom;                     // <-- EEPROM settings are stored in this struct. for struct contents see tzLib.h
@@ -30,7 +30,7 @@ void UpdateDeviceSettings() {
 }
 
 
-void tzSetup(char* tzID) {
+int tzSetup(char* tzID) {
     tzInfo_t web; /* <-- This struct get's it's zoneId from the input arguement (tzID), or froom eeprom.zoneId when tzID is NULL.
                          Other data is populated via the web. If the web provides new data, the EEPROM will be updated. */
 
@@ -108,17 +108,17 @@ void tzSetup(char* tzID) {
         if (http.status == 404) {
             strncpy(tzSetupReturnMsg, web.zoneId, sizeof(tzSetupReturnMsg));
             strncat(tzSetupReturnMsg, " is an invalid time zone ID", sizeof(tzSetupReturnMsg));
-            return;
+            return -1;
         } else if (http.status == -1) {
             tzRefreshTime = Time.now() + tzRetryInterval; // when tzSetup() fails to contact the HTTP server, this will trigger a retry
             strncpy(tzSetupReturnMsg, "Unable to connect to HTTP Server", sizeof(tzSetupReturnMsg));
-            return;
+            return -2;
         } else { 
             strncpy(tzSetupReturnMsg, "HTTP Server returned error '", sizeof(tzSetupReturnMsg));
             char str[10];
             strncat(tzSetupReturnMsg, itoa(http.status, str, 10), sizeof(tzSetupReturnMsg));
             strncat(tzSetupReturnMsg, "'", sizeof(tzSetupReturnMsg));
-            return;
+            return -3;
         }
     } else {    //  <-- http.status == 200
     
@@ -177,7 +177,7 @@ void tzSetup(char* tzID) {
         if (parsingError) {
             UpdateDeviceSettings();
             strncpy(tzSetupReturnMsg, "JSON parsing failed", sizeof(tzSetupReturnMsg));
-            return;
+            return -4;
         } else {    //  <-- parsingError == false
             
         //////////////////// Parsing was successful, so it is time to use the data  /////////////////////
@@ -208,7 +208,7 @@ void tzSetup(char* tzID) {
             }
             UpdateDeviceSettings();
             tzRefreshTime = Time.now() + (tzRefreshInterval * refresh_multiplier);
-            return;
+            return EXIT_SUCCESS;
         }
     }
 }

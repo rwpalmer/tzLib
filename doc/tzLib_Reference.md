@@ -36,17 +36,28 @@ REQUIRED METHODS ==============================================================
 		Function and Usage:
 			-	Reads the time zone information stored in EEPROM. 
 			-	Downloads the latest time zone offset and DST transiton data
-				for the configured timezone.
-			- 	Updates EEPROM when the web provides new informaton.
+				for the time zone ID provided, or stored in EEPROM.
+			- 	Updates EEPROM data when the web provides new data.
 			-	Updates the local device's time zone settings.
 			-	Must be called in the firmware's Setup() section.
-			-	May be called in a Particle function to change time zone.
+			-	May be called in a Particle function to change the time zone.
+			-	Is periodically called by tzLoop() to refresh EEPROM data.
 			
 		Syntax: 
 			-	tzSetup(); <-- when used in tzSetup().
 			-	tzSetup((char*)"<time zone id>");  <-- to change time zone IDs
+				from a quoted string.
+			-	tzSetup(<variable name>); where <variable name> is defined as
+				a char*. 
 			
-		Return: None ... See the tzGetSetupReturnMsg() method.
+		Return:
+			EXIT_SUCCESS = EEPROM was validated or updated
+			-1 = The provided time zone ID was not valid
+			-2 = Unable to connect to HTTP server
+			-3 = HTTP server returned an error
+			-4 = JSON parsing error
+			Note: Upon exit, tzSetup also writes a meaningful error message
+			to static memory.  tzGetSetupReturnMsg() retrieves that message.
 	
     
 	tzLoop() ------------------------------------------------------------------
