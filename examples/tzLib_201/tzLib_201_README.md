@@ -1,5 +1,5 @@
 
-# tzLib_201 
+# tzLib_201.ino
 
 
 **Is an advanced code sample that demonstrates:**
@@ -10,7 +10,7 @@
 
   **_NOTE: A SERIAL MONITOR IS REQUIRED TO DISPLAY tzLib201 OUTPUT_** 
 
-You will find two serial monitor captures below. These provide some sense for
+You will find two serial monitor captures below. These captures provide some sense for
 the data that this sample firmware displays.  In the first capture, we opt
 to change time zone. We are then presented with a list of time zones to choose from. The 
 capture shows that we selected time zone *__t__*, which is *__AustraliaTasmania__*. 
