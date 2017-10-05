@@ -1,7 +1,7 @@
 
 # tzLib_201 
 
-	**Is an advanced code sample that demonstrates**
+	**_Is an advanced code sample that demonstrates:_**
 	
 		* How the time zone ID be changed while the device is running
 		
