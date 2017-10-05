@@ -24,8 +24,9 @@ three weeks apart for timezones with DST, and nine weeks apart for timezones
 without DST. 
 
 
-
- BEGIN SERIAL MONITOR CAPTURE 1 
+===============================================================================
+                        BEGIN SERIAL MONITOR CAPTURE 1 
+===============================================================================
 
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now c
 ---------------------------------------------------------- TIME ZONE SELECTION ---
@@ -61,12 +62,14 @@ Device Settings - - - - - - - - - - - - - - - - - -
 -----------------------------------------------------------------------------------
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now
 
- END SERIAL MONITOR CAPTURE 1 
+===============================================================================
+                        END SERIAL MONITOR CAPTURE 1 
+===============================================================================
 
 
-
-
- BEGIN SERIAL MONITOR CAPTURE 2 
+===============================================================================
+                       BEGIN SERIAL MONITOR CAPTURE 2 
+===============================================================================
 
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now t
 ----------------------------------------------- SETTINGS BEFORE DST TRANSITION ---
@@ -91,4 +94,6 @@ Device Settings - - - - - - - - - - - - - - - - - -
 -----------------------------------------------------------------------------------
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now
 
- END SERIAL MONITOR CAPTURE 2 
+===============================================================================
+                        END SERIAL MONITOR CAPTURE 2 
+===============================================================================
