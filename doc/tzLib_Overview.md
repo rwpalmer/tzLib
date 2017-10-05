@@ -4,7 +4,7 @@
       tzLib manages local time settings and DST transitions for IOT devices.
 
 
-	  ----------------------------- Background ---------------------------------- 
+	  ----------------------------- Background -------------------------------- 
 
 	Local time settings are a function of geography and the policy of the
 	governments that rule over that geography. Any government body (be it a
@@ -25,31 +25,32 @@
 	periodically, often multiple times a year.  If you want more information
 	please go to www.iana.org.
 	
-	IANA's database is the most authoritative database around, and it would be 
-	possible to write a program to access it directly. However, that program
-	would be incredibly complex, and such a program would NEVER fit on an IOT 
-	device. To create this library, we needed to find a way to extract the
-	data that IOT devices need, and to make it available to them.
-	
-	Linux and other OS vendors, like Microsoft and Apple have done the heavy
-	lifting for us. They use the data for their own time management, and to
-	to support time libraries for application developers.  Even so, 
-	extracting the data needed for IOT devices was still a daunting task until
-	Oracle released Java 8 and ZoneRules. With the ZoneRules library, we can 
-	easily extract the IANA data that IOT devices need. 
+	IANA's database is the most authoritative database around, but this is
+	a rules based database which needs to be converted to data that 
+	computers can readily use.
+
+	tzLib runs a PHP query on an HTTP server to obtain the timezone data that
+	is required to maintain the IOT devices local settings and to perform DST
+	transitions at the proper time. PHP uses IANA rules to create the database
+	that we access. https://pecl.php.net/package/timezonedb.
+
 
 
 
 	---------------- How does tzLib acquire the data required -----------------
 	----------------- to manage local time on an IOT device? ------------------
 	
-	A Java program generates extracts IANA data from the OS it runs on to
-	answer the following questions:
+	tzLib leverages the HttpClient library to submit an HTTP POST to an HTTP
+	Server. This POST provides the server with the device's time zone ID, and
+	triggers a PHP script to run on	the server. When the PHP script exits, the 
+	answers to six questions are returned to the tzLib.
 	
-		What is the standard time zone offset for my time zone?
-		What is the current time zone offset for my time zone?
-		When is the next DST transition for my time zone?
-		What will the time zone offset be after the next DST transition?
+		1. What is the standard time zone offset the submitted time zone ID?
+		2. What is the current time zone offset for the submitted time zone ID?
+		3. What is the abbreviation associated with the current offset?
+		4. When is the next DST transition for the submitted time zone ID?
+		5. What will the time zone offset be after the next DST transition?
+		6. What is the abbreviation associated with the post transiton offset?
 	
 		The returned data can be used to answer other questions for example:
 		-	"What is the current DST Offset?": can be computed by subtracting 
@@ -58,17 +59,6 @@
 			the current offset to the standard offset. When the two match,
 			time is STD. When they differ, time is DST. 
 	
-	
-	
-	------------------ How does tzLib obtain the data? --------------------
-	
-	The Java program formats the data it extracts into JSON files. One file is
-	generated for each time zone, and the name of the file is the IANA defined
-	time zone ID.
-
-	tzLib GETs the JSON data with the help of another library  "HttpClient",
-	which uses economical and well tested code.
-
 	
 	
 	
@@ -90,3 +80,20 @@
 	periodically. This will assure that EEPROM data accurately reflects any
 	IANA database changes, and that DST transition data is updated after each
 	transition occurs. 
+
+
+
+	----- How does tzLib know what time zone ID to submit to the server? -----
+
+	With no other guidance, tzLib will submit UTC (aka GMT, or Zulu).
+
+	The firmware developer can use a tzLib method to assign a default time
+	zone ID, and the firmware developer can create a Particle function to
+	employ another tzLib method to change the time zone from its default value.
+
+	If a Particle function is provided the time zone ID can be changed based 
+	on input from external sources. For example, there are a number of HTTP
+	based time-zone selection tools on the web. Some of these are list based,
+	others are map based. It would also be possible to use geolocation
+	software to automatically trigger time zone changes as devices move around
+	the planet. 

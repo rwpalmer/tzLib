@@ -1,7 +1,27 @@
+/* Module: tzLib.cpp
+
+Primary Functions:
+    tzSetup():              Configures local time settings when the device boots
+    tzLoop():               Performs DST time transitions when they are scheduled
+    UpdateDeviceSettings(): Called internally to update device specific settings
+    
+Secondary Functions:
+    tzGetInfo():            Returns the EEPROM object so firmware developers can use the data
+    tzSetTransitionTime()   Allows developers to reset the DST transition time for testing transitions
+    tzSGetSetupReturnMsg(): Returns the exit status message created by tzSetup():
+    tzGetAbbr()             Returns the time zone abbreviation related to the current time zone settings
+    tzGetTransitionAbbr():  Returns the time zone abbreviation related to the next DST transition
+    tzSetDefaultZoneId():   Sets the default time zone ID
+    tzWipeEEPROM            Erases tzLib data from the EEPROM
+    tzSetEepromLocation():  Sets the location(offset) where tzLib will store data in EEPROM
+    tzSetHttpHost():        Sets the host name or IP address of the server where tzLib data exists
+    tzSetHttpPath():        Sets the path to the tzLib data on the server
+*/
+
 #include "tzLib.h"
 //#define LOGGING true      // <-- For debugging, enable a serial console and remove the shashes at the beginning of this line
                                             // tzLoop() periodically calls tzSetup() to validate / refresh the tzInfo stored in EEPROM. 
-const  tzRefreshInterval = 1723680;   // <-- This determines the interval between refreshes. (~3 weeks)
+const time_t tzRefreshInterval = 1723680;   // <-- This determines the interval between refreshes. (~3 weeks)
 const time_t tzRetryInterval =  40000;      // <-- This determines the interval between retries if a refresh fails (~ 11 hours) 
 static time_t tzRefreshTime;                // <-- this variable contains the epoch time for the next EEPROM refresh
 static tzInfo_t eeprom;                     // <-- EEPROM settings are stored in this struct. for struct contents see tzLib.h
@@ -10,7 +30,17 @@ static char tzSetupReturnMsg[81];		    // <-- tzSetup stores a return status mes
 static char defaultZoneId[65] = "UCT";	    // <-- "UCT" unless overridden with tzSetDefaultZoneId()
 static char httpHost[129];                  // <-- The HTTP server's IP address or DNS name
 static char httpPath[129];                  // <-- The path to time zone data on the HTTP server
-static char eepromCurrentVersion[] = "01.00.00a";     // <-- the current ID used to identify the time zone data in EEPROM
+static char eepromCurrentVersion[] = "01.00.01a";     // <-- the current ID used to identify the time zone data in EEPROM
+
+HttpClient http;
+http_response_t response;
+http_request_t request;
+http_header_t headers[] = {
+    { "Content-Type", "application/json" },
+    { "Accept" , "application/json" },
+    //{ "Accept" , "*/*"},
+    { NULL, NULL } // NOTE: Always terminate headers will NULL
+};
 
 
 // This Function is called by tzSetup. It configures local time settings on the device. 
@@ -31,6 +61,7 @@ void UpdateDeviceSettings() {
 
 
 int tzSetup(char* tzID) {
+    
     tzInfo_t web; /* <-- This struct get's it's zoneId from the input arguement (tzID), or froom eeprom.zoneId when tzID is NULL.
                          Other data is populated via the web. If the web provides new data, the EEPROM will be updated. */
 
@@ -43,8 +74,10 @@ int tzSetup(char* tzID) {
         strcpy(eeprom.zoneId, defaultZoneId);
         eeprom.stdOffset = 0;
         eeprom.currentOffset = 0;
+        eeprom.currentAbbr[0] = '\0';
         eeprom.transitionTime = 0;
         eeprom.transitionOffset = 0;
+        eeprom.transitionAbbr[0] = '\0';
     }
             #ifdef LOGGING
                 if (tzID == NULL) {
@@ -62,10 +95,14 @@ int tzSetup(char* tzID) {
                 Serial.println(String(eeprom.stdOffset));
                 Serial.print("   eeprom.currentOffset    = ");
                 Serial.println(String(eeprom.currentOffset));
+                Serial.print("   eeprom.currentAbbr      = ");
+                Serial.println(String(eeprom.currentAbbr));
                 Serial.print("   eeprom.transitonTime    = ");
                 Serial.println(String(eeprom.transitionTime));
                 Serial.print("   eeprom.transitionOffset = ");
                 Serial.println(String(eeprom.transitionOffset));
+                Serial.print("   eeprom.transitionAbbr   = ");
+                Serial.println(String(eeprom.transitionAbbr));
                 Serial.print("   Sizeof(eeprom) = ");
                 Serial.println(String(sizeof(eeprom)));
             #endif
@@ -77,46 +114,48 @@ int tzSetup(char* tzID) {
  
  
     // Get tzOffsetJSON from HTTP Host
-    char path2zone[100];
-    strcpy (path2zone, httpPath);
-    strcat (path2zone, web.zoneId);
+    char query[100] = "{\"timeZoneID\":\"";
+    strcat (query, web.zoneId);
+    strcat (query, "\"}");
+
             #ifdef LOGGING
                 Serial.print("\nhttpHost = ");
                 Serial.println(String(httpHost));
-                Serial.print("Path2Zone  = ");
-                Serial.println(String(path2zone));
+                Serial.print("httpPath  = ");
+                Serial.println(String(httpPath));
+                Serial.print("query = ");
+                Serial.println(String(query));
             #endif
 			
     tzSetupReturnMsg[0]='\0';
-	HttpClient client;
-	http_request_t server;
-    server.hostname = httpHost;
-    server.port = 80;
-    server.path = path2zone;
-	http_response_t http;
-    client.get(server, http);
+    request.hostname = httpHost;
+    request.port = 80;
+    request.path = httpPath;
+    request.body = query;
+    http.post(request, response, headers);
 	
             #ifdef LOGGING
+                Serial.println("request.body = " + String(request.body));
                 Serial.print("\nhttp.status = ");
-                Serial.println(String(http.status));
-                Serial.print("http.body   = ");
-                Serial.println(String(http.body));
+                Serial.println(String(response.status));
+                Serial.print("response.body   = ");
+                Serial.println(String(response.body));
             #endif
 			
-    if (http.status != 200) {
+    if (response.status != 200) {
         UpdateDeviceSettings();
-        if (http.status == 404) {
+        if (response.status == 404) {
             strncpy(tzSetupReturnMsg, web.zoneId, sizeof(tzSetupReturnMsg));
             strncat(tzSetupReturnMsg, " is an invalid time zone ID", sizeof(tzSetupReturnMsg));
             return -1;
-        } else if (http.status == -1) {
+        } else if (response.status == -1) {
             tzRefreshTime = Time.now() + tzRetryInterval; // when tzSetup() fails to contact the HTTP server, this will trigger a retry
             strncpy(tzSetupReturnMsg, "Unable to connect to HTTP Server", sizeof(tzSetupReturnMsg));
             return -2;
         } else { 
             strncpy(tzSetupReturnMsg, "HTTP Server returned error '", sizeof(tzSetupReturnMsg));
             char str[10];
-            strncat(tzSetupReturnMsg, itoa(http.status, str, 10), sizeof(tzSetupReturnMsg));
+            strncat(tzSetupReturnMsg, itoa(response.status, str, 10), sizeof(tzSetupReturnMsg));
             strncat(tzSetupReturnMsg, "'", sizeof(tzSetupReturnMsg));
             return -3;
         }
@@ -139,25 +178,35 @@ int tzSetup(char* tzID) {
         // Parse the JSON Data in a non-elegant, but economical manner. 
         char* pch;
         bool parsingError = false;
-        pch = strstr(http.body,"\"StdOffset\":");
+        pch = strstr(response.body,"\"sOffset\":");
         if (pch != NULL) { 
-            web.stdOffset = atoi(pch+12);
+            web.stdOffset = atof(pch+10);           
         } else {
             parsingError = true;
         }
-        pch = strstr(http.body,"\"CurrentOffset\":");
+        pch = strstr(response.body,"\"cOffset\":");
         if (pch != NULL) { 
-            web.currentOffset = atoi(pch+16);
+            web.currentOffset = atof(pch+10);
         } else {
             parsingError = true;
         }
-        pch = strstr(http.body,"\"EpochSeconds\":");
-        if (pch != NULL) { 
-            web.transitionTime = atol(pch+15);
+        pch = strstr(response.body,"\"cAbbr\":\"");
+        if (pch != NULL) {
+            char* qch = strchr(pch+9, '\"');    
+            strncpy(web.currentAbbr, pch+9, (qch)-(pch+9));
         }
-        pch = strstr(http.body,"\"Offset\":");
+        pch = strstr(response.body,"\"tTime\":");
         if (pch != NULL) { 
-            web.transitionOffset = atoi(pch+9);
+            web.transitionTime = atol(pch+8);
+        }
+        pch = strstr(response.body,"\"tOffset\":");
+        if (pch != NULL) { 
+            web.transitionOffset = atof(pch+10);
+        }
+        pch = strstr(response.body,"\"tAbbr\":\"");
+        if (pch != NULL) {
+            char* qch = strchr(pch+9, '\"');
+            strncpy(web.transitionAbbr, pch+9, (qch)-(pch+9));
         }
 				#ifdef LOGGING
 					Serial.print("    web.version          = ");
@@ -168,10 +217,14 @@ int tzSetup(char* tzID) {
 					Serial.println(String(web.stdOffset));
 					Serial.print("    web.currentOffset    = ");
 					Serial.println(String(web.currentOffset));
+                    Serial.print("    web.currentAbbr      = ");
+                    Serial.println(String(web.currentAbbr));
 					Serial.print("    web.transitonTime    = ");
 					Serial.println(String(web.transitionTime));
 					Serial.print("    web.transitionOffset = ");
 					Serial.println(String(web.transitionOffset));
+                    Serial.print("    web.transitionAbbr   = ");
+                    Serial.println(String(web.transitionAbbr));
 				#endif
 
         if (parsingError) {
@@ -186,20 +239,25 @@ int tzSetup(char* tzID) {
             // If the tz has no DST scheduled transitions, we will trebble the refresh Interval
             if ((web.transitionTime == 0) && (web.stdOffset == web.currentOffset)) {
                 refresh_multiplier = 3;
-            }
-            // Correct JSON data for any transitions that may have already taken place ...
-            if (web.transitionTime < Time.now()) {
-                web.currentOffset = web.transitionOffset;
-                web.transitionTime = 0;
-                web.transitionOffset = 0;
+            } else {
+                // Correct JSON data for any transitions that may have already taken place ...
+                if (web.transitionTime < Time.now()) {
+                    web.currentOffset = web.transitionOffset;
+                    strcpy(web.currentAbbr, web.transitionAbbr);
+                    web.transitionTime = 0;
+                    web.transitionOffset = 0;
+                    web.transitionAbbr[0]='\0';
+                }
             }
 
             // If something changed, update the EEPROM
             if ((strcmp(eeprom.zoneId, web.zoneId) != 0)
             || (eeprom.stdOffset != web.stdOffset)
             || (eeprom.currentOffset != web.currentOffset)
+            || (strcmp(eeprom.currentAbbr, web.currentAbbr) != 0)
             || (eeprom.transitionTime != web.transitionTime)
-            || (eeprom.transitionOffset != web.transitionOffset)) {
+            || (eeprom.transitionOffset != web.transitionOffset) 
+            || (strcmp(eeprom.transitionAbbr, web.transitionAbbr) != 0)) {
                 EEPROM.put(eepromLocation,web);
                 EEPROM.get(eepromLocation,eeprom);
                 strncpy(tzSetupReturnMsg, "EEPROM Data Updated", sizeof(tzSetupReturnMsg));
@@ -221,8 +279,10 @@ void tzLoop() {
         
         // Update tzInfo ... making the transition settings the current settings
         eeprom.currentOffset = eeprom.transitionOffset;
+        strcpy(eeprom.currentAbbr, eeprom.transitionAbbr);
         eeprom.transitionTime = 0;
         eeprom.transitionOffset = 0;
+        eeprom.transitionAbbr[0] = '\0';
 
        // Update the device to the transition settings
         float DSTOffset = (eeprom.currentOffset - eeprom.stdOffset);
@@ -258,6 +318,14 @@ char* tzGetSetupReturnMsg() {
     return tzSetupReturnMsg;
 }
 
+char* tzGetAbbr() {
+    return eeprom.currentAbbr;
+}
+
+char* tzGetTransitionAbbr() {
+    return eeprom.transitionAbbr;
+}
+
 void tzSetDefaultZoneId(char* id) {
     strncpy(defaultZoneId, id, sizeof(defaultZoneId));
 }
@@ -268,8 +336,10 @@ int tzWipeEEPROM() {
 		eeprom.zoneId[0] = '\0';
 		eeprom.stdOffset = 0;
 		eeprom.currentOffset = 0;
+		eeprom.currentAbbr[0] = '\0';
 		eeprom.transitionTime = 0;
 		eeprom.transitionOffset = 0;
+		eeprom.transitionAbbr[0] = '\0';
 		EEPROM.put(eepromLocation,eeprom);
 		return EXIT_SUCCESS;
 	}

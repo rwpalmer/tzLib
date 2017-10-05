@@ -6,9 +6,9 @@ void displaytzInfo(bool = true);
     struct zones {
         char ch;
         char id[65];
-    } zone[] = {{'a',"Africa/Johannesburg"},{'b',"Brazil/East"},{'c',"US/Central"},{'d',"Asia/Dhaka"},{'e',"Asia/Saigon"},
-                {'j',"Japan"},{'k',"America/Indiana/Knox"},{'n',"Canada/Newfoundland"},{'p',"Europe/Paris"},{'s',"Singapore"},
-                {'t',"Australia/Tasmania"},{'v',"Asia/Tel_Aviv"},{'x',"America/Cape_Cod"}};
+    } zone[] = {{'a',"Africa/Johannesburg"},{'b',"Brazil/East"},{'c',"America/Chicago"},{'d',"Asia/Dhaka"},{'e',"Asia/Saigon"},{'f',"America/St_Johns"},{'i',"Asia/Tehran"},
+                {'j',"Japan"},{'k',"America/Indiana/Knox"},{'m',"Pacific/Marquesas"},{'n',"Canada/Newfoundland"},{'p',"Europe/Amsterdam"},{'s',"Singapore"},
+                {'t',"Australia/Tasmania"},{'v',"Asia/Tel_Aviv"},{'x',"Invalid"},{'z',"Pacific/Chatham"}};
     bool topMenu = true;
 
 
@@ -17,8 +17,8 @@ void setup() {
     //tzWipeEEPROM();   // <-- When active, this erases time zone data from the EEPROM, so testing can be done with a "new" device. 
     tzSetDefaultZoneId((char*)"America/New_York");  // <-- This changes the default time zone assigned to new devices from "UCT" to ...
     tzSetEepromLocation(256);   //  <-- This sets the EEPROM location where time zone information should be stored (default = 0);
-    tzSetHttpHost((char*)"192.168.86.28");
-    tzSetHttpPath((char*)"/tz/tzOffsetJSON/");
+    tzSetHttpHost((char*)"208.85.39.75");
+    tzSetHttpPath((char*)"/tzLib/getJSON.php");
     
 
     tzSetup();  // <----------- This function configures the devices time zone offset, and DST settings
@@ -79,9 +79,6 @@ void loop() {
             if (ch == 27) { //  <-- handle the esc key
                 topMenu = true;
                 Serial.println("<<<< Exiting Time Zone Selection >>>");
-                /*for (int i=0; i<50; i++) {
-                    Serial.println(String(i));
-                }*/
                 displaytzPrompt();
             }
             for (int i=0; i<(sizeof(zone)/sizeof(zone[1])); i++) {
@@ -102,10 +99,10 @@ void loop() {
 void displaytzInfo(bool msg) {
     tzInfo_t tzInfo = tzGetInfo();  //  <-- This function gets the time zone offset and DST transition data from EEPROM
     Serial.println(String(tzInfo.zoneId));
-    Serial.print("        Standard Offset: ");
-    Serial.print(String(tzInfo.stdOffset));
-    Serial.print(" hours, Current Offset: ");
+    Serial.print("         Current Offset: ");
     Serial.print(String(tzInfo.currentOffset));
+    Serial.print(" hours, Standard Offset: ");
+    Serial.print(String(tzInfo.stdOffset));
     Serial.println(" hours");
     if (tzInfo.transitionTime == 0) {
         Serial.println("        No DST transitions pending.");
@@ -132,7 +129,9 @@ void displaytzInfo(bool msg) {
     Serial.print(String(Time.getDSTOffset()));
     Serial.println(" hours");
     Serial.print("    The current time in this time zone is: " );
-    Serial.println(Time.format(Time.now(), TIME_FORMAT_DEFAULT));
+    Serial.print(Time.format(Time.now(), TIME_FORMAT_DEFAULT));
+    Serial.print("   ");
+    Serial.println(tzGetAbbr());
 }
 
 

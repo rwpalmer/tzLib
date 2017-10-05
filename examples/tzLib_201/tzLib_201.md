@@ -23,35 +23,42 @@ device is rebooted.
 Note: The bottom time zone ID listed in the time zone selection menu is
 invalid. That is intentional ... for testing purposes. 
 
+
+
+
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BEGIN SERIAL MONITOR CAPTURE 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
------------------------------------------------------------------------------------
+
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now: c
 ---------------------------------------------------------- TIME ZONE SELECTION ---
    a = Africa/Johannesburg
    b = Brazil/East
-   c = US/Central
+   c = America/Chicago
    d = Asia/Dhaka
    e = Asia/Saigon
+   f = America/St_Johns
+   i = Asia/Tehran
    j = Japan
    k = America/Indiana/Knox
+   m = Pacific/Marquesas
    n = Canada/Newfoundland
-   p = Europe/Paris
+   p = Europe/Amsterdam
    s = Singapore
    t = Australia/Tasmania
    v = Asia/Tel_Aviv
-   x = America/Cape_Cod
+   x = Invalid
+   z = Pacific/Chatham
 
    You may select one of the above timezones, or press esc to return: t
 ------------------------------------------------------------- TIME ZONE CHANGED ---
 Australia/Tasmania
-        Standard Offset: 10.000000 hours, Current Offset: 10.000000 hours
-     Next DST Transiton:  1506787200 (epoch seconds UCT) = Sun Oct  1 02:00:00 2017 (Local Time)
-      Transition Offset: 11.000000 hours
+         Current Offset: 11.000000 hours, Standard Offset: 10.000000 hours
+     Next DST Transiton:  1522512000 (epoch seconds UCT) = Sun Apr  1 03:00:00 2018 (Local Time)
+      Transition Offset: 10.000000 hours
             EEPROM Data Updated
 Device Settings: - - - - - - - - - - - - - - - - - -
-            Time.zone() = 10.000000           Time.isDST() = 0
-    Time.getDSTOffset() = 0.000000 hours
-    The current time in this time zone is: Sat Sep 23 11:11:01 2017
+            Time.zone() = 10.000000           Time.isDST() = 1
+    Time.getDSTOffset() = 1.000000 hours
+    The current time in this time zone is: Fri Oct  6 05:54:16 2017   AEDT
 -----------------------------------------------------------------------------------
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now:
 
@@ -64,26 +71,27 @@ Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now:
 
 
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BEGIN SERIAL MONITOR CAPTURE 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
------------------------------------------------------------------------------------
+
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now: t
 ----------------------------------------------- SETTINGS BEFORE DST TRANSITION ---
 Australia/Tasmania
-        Standard Offset: 10.000000 hours, Current Offset: 10.000000 hours
-     Next DST Transiton:  1506787200 (epoch seconds UCT) = Sun Oct  1 02:00:00 2017 (Local Time)
-      Transition Offset: 11.000000 hours
-Device Settings: - - - - - - - - - - - - - - - - - -
-            Time.zone() = 10.000000           Time.isDST() = 0
-    Time.getDSTOffset() = 0.000000 hours
-    The current time in this time zone is: Sat Sep 23 11:21:54 2017
------------------------------------------------- SETTINGS AFTER DST TRANSITION ---
-Australia/Tasmania
-        Standard Offset: 10.000000 hours, Current Offset: 11.000000 hours
-        No DST transitions pending.
-            EEPROM Data Updated
+         Current Offset: 11.000000 hours, Standard Offset: 10.000000 hours
+     Next DST Transiton:  1522512000 (epoch seconds UCT) = Sun Apr  1 03:00:00 2018 (Local Time)
+      Transition Offset: 10.000000 hours
 Device Settings: - - - - - - - - - - - - - - - - - -
             Time.zone() = 10.000000           Time.isDST() = 1
     Time.getDSTOffset() = 1.000000 hours
-    The current time in this time zone is: Sat Sep 23 12:21:54 2017
+    The current time in this time zone is: Fri Oct  6 05:56:28 2017   AEDT
+------------------------------------------------ SETTINGS AFTER DST TRANSITION ---
+Australia/Tasmania
+         Current Offset: 10.000000 hours, Standard Offset: 10.000000 hours
+        No DST transitions pending.
+            EEPROM Data Updated
+Device Settings: - - - - - - - - - - - - - - - - - -
+            Time.zone() = 10.000000           Time.isDST() = 0
+    Time.getDSTOffset() = 0.000000 hours
+    The current time in this time zone is: Fri Oct  6 04:56:28 2017   AEST
+
 -----------------------------------------------------------------------------------
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now:
 
