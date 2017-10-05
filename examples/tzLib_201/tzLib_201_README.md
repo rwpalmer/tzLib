@@ -13,7 +13,7 @@
 You will find two serial monitor captures below. These provide some sense for
 the data that this sample firmware displays.  In the first capture, we opt
 to change time zone. We are then presented with a list of time zones to choose from. The 
-capture shows that we selected time zone *t*, which is *AustraliaTasmania*. 
+capture shows that we selected time zone *_t_*, which is *_AustraliaTasmania_*. 
 That time zone has a DST transition scheduled for 2AM Sunday October 1st, 2017.
 At that time, this zone will move from standard time to DST. 
 
