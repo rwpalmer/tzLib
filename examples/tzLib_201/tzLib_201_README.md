@@ -1,13 +1,14 @@
 
 # tzLib_201 
 
-	**_Is an advanced code sample that demonstrates:_**
+
+**Is an advanced code sample that demonstrates:**
 	
-		* How the time zone ID be changed while the device is running
+	* How the time zone ID be changed while the device is running
 		
-		* How we can emulate DST changes for application testing
+	* How we can emulate DST changes for application testing
 		
-		* How to access the data that tzLib downloads
+	* How to access the data that tzLib downloads
 
   **_NOTE: A SERIAL MONITOR IS REQUIRED TO DISPLAY tzLib201 OUTPUT_** 
 
@@ -27,6 +28,8 @@ corrected when tzLib performs the next refresh cycle, or the next time the
 device is rebooted ... whichever comes first. Refresh cycles occur roughly
 three weeks apart for timezones with DST, and nine weeks apart for timezones 
 without DST. 
+
+
 
 ### SERIAL MONITOR CAPTURE 1 
 ```
@@ -64,6 +67,8 @@ Device Settings - - - - - - - - - - - - - - - - - -
 -----------------------------------------------------------------------------------
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now
 ```
+
+
 
 
 
