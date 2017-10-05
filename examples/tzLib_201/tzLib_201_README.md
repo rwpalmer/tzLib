@@ -1,6 +1,6 @@
 
 # tzLib_201 
-	**Is an advanced code sample that demonstrates:**
+	** Is an advanced code sample that demonstrates: **
 		* How the time zone ID be changed while the device is running
 		* How we can emulate DST changes for application testing
 		* How to access the data that tzLib downloads
@@ -63,7 +63,7 @@ Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now
 
 
 
-##SERIAL MONITOR CAPTURE 2 
+## SERIAL MONITOR CAPTURE 2 
 ```
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now t
 ----------------------------------------------- SETTINGS BEFORE DST TRANSITION ---
