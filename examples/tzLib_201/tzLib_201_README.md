@@ -1,6 +1,6 @@
 
 # tzLib_201 
-	** Is an advanced code sample that demonstrates: **
+	__Is an advanced code sample that demonstrates:__
 		* How the time zone ID be changed while the device is running
 		* How we can emulate DST changes for application testing
 		* How to access the data that tzLib downloads
