@@ -4,11 +4,11 @@ tzLib_201 is an advanced code sample. It demonstrates:
 	-	How we can emulate DST changes for application testing?
     -   How to access the data that tzLib downloads
 
- A SERIAL MONITOR IS REQUIRED TO DISPLAY tzLIb201 OUTPUT. 
+ <<< A SERIAL MONITOR IS REQUIRED TO DISPLAY tzLib201 OUTPUT >>>
 
 You will find two serial monitor captures below. These provide some sense for
 the data that this firmware displays.  In the first capture, we opt
-to change time zone. That gives us a list of time zones to choose from. The 
+to change time zone. Then we are given a list of time zones to choose from. The 
 capture shows that we selected time zone t, which is Australia/Tasmania. 
 That time zone has a DST transition scheduled for 2AM Sunday October 1st, 2017.
 At that time, they will move from standard time to DST. 
@@ -17,11 +17,11 @@ In the second capture, we opt to perform that DST transition NOW. The top
 portion of the capture shows how the settings were before the transition, and 
 the second half shows the settings after the transition. 
 
-Note that shows that there are no DST transitions pending after the transition. 
-This will be corrected when tzLib performs the next refresh cycle, or the next 
-time the device is rebooted ... whichever comes first. Refresh cycles occur 
-roughly three weeks apart for timezones with DST, and nine weeks apart for 
-timezones without DST. 
+Note that after transition display shows no pending transitions.  This will be 
+corrected when tzLib performs the next refresh cycle, or the next time the
+device is rebooted ... whichever comes first. Refresh cycles occur roughly
+three weeks apart for timezones with DST, and nine weeks apart for timezones 
+without DST. 
 
 
 
