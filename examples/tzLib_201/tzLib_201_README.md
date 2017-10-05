@@ -3,11 +3,8 @@
 
 
 **Is an advanced code sample that demonstrates:**
-	
 	* How the time zone ID be changed while the device is running
-		
 	* How we can emulate DST changes for application testing
-		
 	* How to access the data that tzLib downloads
 
   **_NOTE: A SERIAL MONITOR IS REQUIRED TO DISPLAY tzLib201 OUTPUT_** 
