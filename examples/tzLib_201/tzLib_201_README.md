@@ -1,6 +1,6 @@
 
-#tzLib_201 
-	**Is an advanced code sample. It demonstrates**
+# tzLib_201 
+	Is an advanced code sample. It demonstrates
 		-	How the time zone ID be changed while the device is running
 		-	How we can emulate DST changes for application testing
 		-   How to access the data that tzLib downloads
@@ -25,7 +25,7 @@ three weeks apart for timezones with DST, and nine weeks apart for timezones
 without DST. 
 
 *SERIAL MONITOR CAPTURE 1 
-
+```
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now c
 ---------------------------------------------------------- TIME ZONE SELECTION ---
    a = AfricaJohannesburg
@@ -59,12 +59,12 @@ Device Settings - - - - - - - - - - - - - - - - - -
     The current time in this time zone is Fri Oct  6 055416 2017   AEDT
 -----------------------------------------------------------------------------------
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now
-
+```
 
 
 
 *SERIAL MONITOR CAPTURE 2 
-
+```
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now t
 ----------------------------------------------- SETTINGS BEFORE DST TRANSITION ---
 AustraliaTasmania
@@ -87,4 +87,4 @@ Device Settings - - - - - - - - - - - - - - - - - -
 
 -----------------------------------------------------------------------------------
 Press 'q' to query EEPROM, 'c' to change time zone, or 't' to transition now
-
+```
