@@ -81,15 +81,21 @@
 
 ### How does tzLib know the correct time zone ID to submit to the server?
 
-	With no other guidance, tzLib will submit UTC (aka GMT, or Zulu).
-
-	The firmware developer can use a tzLib method to assign a default time
-	zone ID, and the firmware developer can create a Particle function to
-	employ another tzLib method to change the time zone from its default value.
-
-	If a Particle function is provided the time zone ID can be changed based 
-	on input from external sources. For example, there are a number of HTTP
-	based time-zone selection tools on the web. Some of these are list based,
-	others are map based. It would also be possible to use geolocation
-	software to automatically trigger time zone changes as devices move around
-	the planet. 
+	With no other guidance, tzLib will default to UTC (aka GMT, or Zulu). 
+	Firmware developers have the option of overriding this default.
+	
+	tzLib will adopt the default time zone ID on the first boot. The ID will
+	be stored in EEPROM, and the device settings will be set to the default
+	time zone's standard offset and DST settings. 
+	
+	tzLib includes a method that can change the time zone ID and reset the 
+	devices local time settings at any time. This method can be invoked from 
+	an external internet source (via a Particle function), or by logic within
+	the firmware loop itself. 
+	
+	Developers can provide a time-zone selection tool to their users. A number
+	of list-based and map-based tools are available. For mobile devices, a
+	geopositioning tool could also be used to change time zones as the device
+	moves from one zone to another. The only restriction is that selection
+	tools MUST generate a valid IANA time zone ID (aka Olson name).
+	
