@@ -1,10 +1,10 @@
 # tzLib
 
 
-      tzLib manages local time settings and DST transitions for IOT devices.
+###### tzLib manages local time settings and DST transitions for IOT devices
 
 
-	  ----------------------------- Background -------------------------------- 
+###                               Background
 
 	Local time settings are a function of geography and the policy of the
 	governments that rule over that geography. Any government body (be it a
@@ -37,8 +37,7 @@
 
 
 
-	---------------- How does tzLib acquire the data required -----------------
-	----------------- to manage local time on an IOT device? ------------------
+### How does tzLib acquire the data required to manage local time settings?
 	
 	tzLib leverages the HttpClient library to submit an HTTP POST to an HTTP
 	Server. This POST provides the server with the device's time zone ID, and
