@@ -1,6 +1,6 @@
 # tzLib
 
-### tzLib manages local time settings and DST transitions for IOT devices
+#### Manages local time settings and DST transitions for IOT devices
 
 
 ## Background:
@@ -59,19 +59,19 @@
 	
 	
 	
-		----------------- What does tzLib do with the data? -------------------
+### What does tzLib do with the data?
 
 	Once tzLib has received the JSON file, tzLib parses the JSON and updates 
 	the devices EEPROM if any new data is received. The devices local time 
 	settings are then updated. 
 		For the Particle Photon, this involves setting
-			Time.zone() is set to the current offset
-			Time.setDSTOffset() is set to ( the current - the standard offset)
-			Time.endDST () is invoked if DSTOffset is 0
-			Time.beginDST() is invoked DSTOffset is not 0
+			* Time.zone() is set to the current offset
+			* Time.setDSTOffset() is set to ( the current - the standard offset)
+			* Time.endDST () is invoked if DSTOffset is 0
+			* Time.beginDST() is invoked DSTOffset is not 0
 	
 	For time zones that have DST, tzLib will also reset the local time settings
-	when the next DST transition time is reached.
+	when the next DST transition time is scheduled.
 	
 	Since it may be a long time between reboots, tzLib validates EEPROM data
 	periodically. This will assure that EEPROM data accurately reflects any
@@ -80,7 +80,7 @@
 
 
 
-	----- How does tzLib know what time zone ID to submit to the server? -----
+### How does tzLib know the correct time zone ID to submit to the server?
 
 	With no other guidance, tzLib will submit UTC (aka GMT, or Zulu).
 
