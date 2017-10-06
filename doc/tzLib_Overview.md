@@ -1,11 +1,9 @@
 # tzLib
 
-
-	#### tzLib manages local time settings and DST transitions for IOT devices
+	### tzLib manages local time settings and DST transitions for IOT devices
 
 
 ## Background:
-
 	Local time settings are a function of geography and the policy of the 
 	governments that rule over that geography.  Any government body (be it 
 	a nation, a state or province, a county, or even a city can decide that 
