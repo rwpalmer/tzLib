@@ -52,8 +52,8 @@
 	
 		The returned data can be used to compute:
 		-   Current DST Offset = (current offset - standard offset)
-		-	isDST = false when (current offset = standard offset)
-			isDST = true when (current offset != standard offset)
+		-   isDST = false when (current offset = standard offset)
+		    isDST = true when (current offset != standard offset)
 	
 	
 	
