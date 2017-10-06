@@ -1,7 +1,7 @@
 # tzLib
 
 
-###### tzLib manages local time settings and DST transitions for IOT devices
+#### tzLib manages local time settings and DST transitions for IOT devices
 
 
 ###                               Background
