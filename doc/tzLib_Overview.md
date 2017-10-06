@@ -21,7 +21,7 @@
 	calculate local time for a geography given a specific date in time,
 	be it in the past, the present, or the future. This database is updated 
 	periodically, often multiple times a year.If you want more information
-	please go to [http://www.iana.org].
+	please go to http://www.iana.org.
 	
 	IANA's database is the most authoritative database around, but this is a 
 	**_rules-based_** database which needs to be converted to data that computers
@@ -30,7 +30,7 @@
 	tzLib runs a PHP query on an HTTP server to obtain the timezone data that is 
 	required to maintain the IOT devices local settings and to perform DST 
 	transitions at the proper time. PHP uses IANA rules to create the database 
-	that we access. [https://pecl.php.net/package/timezonedb](https://pecl.php.net/package/timezonedb)
+	that we access. https://pecl.php.net/package/timezonedb.
 
 
 
