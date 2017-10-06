@@ -8,7 +8,7 @@
 	* How we can trigger pending DST changes for application testing
 	* How to access the data that tzLib downloads
 
-  **_NOTE: A SERIAL MONITOR IS REQUIRED TO DISPLAY tzLib201 OUTPUT_** 
+  **_NOTE: A SERIAL MONITOR IS REQUIRED TO DISPLAY tzLib_201 OUTPUT_** 
 
 You will find two serial monitor captures below. These captures provide some sense for
 the data that this sample firmware displays.  In the first capture, we opt
