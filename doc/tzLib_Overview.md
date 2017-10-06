@@ -39,22 +39,21 @@
 	
 	tzLib leverages the HttpClient library to submit an HTTP POST to an HTTP
 	Server. This POST provides the server with the device's time zone ID, and
-	triggers a PHP script to run on	the server. When the PHP script exits, the 
-	answers to six questions are returned to the tzLib.
+	triggers a PHP script to run on	the server. When the PHP script exits, 
+	data related to the submitted time zone ID is returned to tzLib. This
+	includes:
 	
-		1. 	What is the standard time zone offset the submitted time zone ID?
-		2. 	What is the current time zone offset for the submitted time zone ID?
-		3. 	What is the abbreviation associated with the current offset?
-		4. 	When is the next DST transition for the submitted time zone ID?
-		5. 	What will the time zone offset be after the next DST transition?
-		6. 	What is the abbreviation associated with the post transiton offset?
+		-   Standard time zone offset
+		-   Current time zone offset
+		-   Abbreviation associated with the current offset
+		-   Time for the next DST transition
+		-   Post transition current offset
+		-   Abbreviation associated with the post transition current offset
 	
-		The returned data can be used to answer other questions for example:
-		-   What is the current DST Offset?": can be computed by subtracting 
-			the standard offset from the current offset.
-		-	"Is the current time STD or DST?": can be computed by comparing 
-			the current offset to the standard offset. When the two match,
-			time is STD. When they differ, time is DST. 
+		The returned data can be used to compute:
+		-   Current DST Offset = (current offset - standard offset)
+		-	isDST = false when (current offset = standard offset)
+			isDST = true when (current offset != standard offset)
 	
 	
 	
@@ -65,10 +64,10 @@
 	the devices EEPROM if any new data is received. The devices local time 
 	settings are then updated. 
 		For the Particle Photon, this involves setting
-			-	Time.zone() is set to the current offset
-			-	Time.setDSTOffset() is set to ( the current - the standard offset)
-			-	Time.endDST () is invoked if DSTOffset is 0
-			-	Time.beginDST() is invoked DSTOffset is not 0
+		   -   Time.zone() is set to the current offset
+		   -   Time.setDSTOffset() is set to (current - the standard offset)
+		   -   Time.endDST () is invoked if DSTOffset is 0
+		   -   Time.beginDST() is invoked DSTOffset is not 0
 	
 	For time zones that have DST, tzLib will also reset the local time settings
 	when the next DST transition time is scheduled.
