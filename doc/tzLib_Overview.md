@@ -4,14 +4,17 @@
 	#### tzLib manages local time settings and DST transitions for IOT devices
 
 
-### Background
+## Background:
 
-	Local time settings are a function of geography and the policy of the governments that rule over that geography.
-	Any government body (be it a nation, a state or province, a county, or even a city can decide that resetting the clocks
-	in their domain would make life better for the citizenry working and residing there. Common reasons for such a 
-	determination relate to agriculture, safety, and commerce. Regardless of the reason, a government can adopt a different
-	time zone or use daylight savings time (DST) to reset their clocks. The point is: Local time is not static. It can, and
-	does change from time to time.
+	Local time settings are a function of geography and the policy of the 
+	governments that rule over that geography.  Any government body (be it 
+	a nation, a state or province, a county, or even a city can decide that 
+	resetting the clocksin their domain would make life better for the 
+	citizenry working and residing there. Common reasons for such a 
+	determination relate to agriculture, safety, and commerce. Regardless 
+	of the reason, a government can adopt a different time zone or use daylight 
+	savings time (DST) to reset their clocks. The point is: Local time is not 
+	static. It can, and does change from time to time.
 	
 	In addition to administering internet domain names and IP addresses, the IANA (Internet Assigned Numbers Authority)
 	maintains a time zone database that is used by communications and computer companies to administer local time world wide.
