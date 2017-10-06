@@ -86,7 +86,7 @@
 	
 	tzLib will adopt the default time zone ID on the first boot. The ID will
 	be stored in EEPROM, and the device settings will be configured to 
-	reflect the default	time zone's standard offset and DST settings. 
+	reflect the default time zone's standard offset and DST settings. 
 	
 	tzLib includes a method that can change the time zone ID and reset the 
 	devices local time settings at any time. This method can be invoked from 
