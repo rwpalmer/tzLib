@@ -1,38 +1,18 @@
 # tzLib
 
 
-#### tzLib manages local time settings and DST transitions for IOT devices
+	#### tzLib manages local time settings and DST transitions for IOT devices
 
 
 ###                               Background
 
-	Local time settings are a function of geography and the policy of the
-	governments that rule over that geography. Any government body (be it a
-	nation, a state or province, a county, or even a city can decide that 
-	resetting the clocks in their domain would make life better for
-	the citizenry working and residing there. Common reasons for such a
-	determination relate to agriculture, safety, and commerce. Regardless of
-	the reason, a government can adopt a different time zone or use daylight 
-	savings time (DST) to reset their clocks. The point is: Local time is not 
-	static. It can, and does change from time to time.
+	Local time settings are a function of geography and the policy of the governments that rule over that geography. Any government body (be it a nation, a state or province, a county, or even a city can decide that resetting the clocks in their domain would make life better for the citizenry working and residing there. Common reasons for such a determination relate to agriculture, safety, and commerce. Regardless of the reason, a government can adopt a different time zone or use daylight savings time (DST) to reset their clocks. The point is: Local time is not static. It can, and does change from time to time.
 	
-	In addition to administering internet domain names and IP addresses, the 
-	IANA (Internet Assigned Numbers Authority) maintains a time zone database
-	that is used by communications and computer companies to administer local
-	time world wide. The database is a collection of rules that specify how
-	to calculate local time for a geography given a specific date in time, 
-	be it in the past, the present, or the future. This database is updated
-	periodically, often multiple times a year.  If you want more information
-	please go to www.iana.org.
+	In addition to administering internet domain names and IP addresses, the IANA (Internet Assigned Numbers Authority) maintains a time zone database that is used by communications and computer companies to administer local time world wide. The database is a collection of rules that specify how to calculate local time for a geography given a specific date in time, be it in the past, the present, or the future. This database is updated periodically, often multiple times a year.  If you want more information please go to www.iana.org.
 	
-	IANA's database is the most authoritative database around, but this is
-	a rules based database which needs to be converted to data that 
-	computers can readily use.
+	IANA's database is the most authoritative database around, but this is a rules based database which needs to be converted to data that computers can readily use.
 
-	tzLib runs a PHP query on an HTTP server to obtain the timezone data that
-	is required to maintain the IOT devices local settings and to perform DST
-	transitions at the proper time. PHP uses IANA rules to create the database
-	that we access. https://pecl.php.net/package/timezonedb.
+	tzLib runs a PHP query on an HTTP server to obtain the timezone data that is required to maintain the IOT devices local settings and to perform DST transitions at the proper time. PHP uses IANA rules to create the database that we access. https://pecl.php.net/package/timezonedb.
 
 
 
