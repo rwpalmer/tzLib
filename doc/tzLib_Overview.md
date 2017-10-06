@@ -16,17 +16,23 @@
 	savings time (DST) to reset their clocks. The point is: Local time is not 
 	static. It can, and does change from time to time.
 	
-	In addition to administering internet domain names and IP addresses, the IANA (Internet Assigned Numbers Authority)
-	maintains a time zone database that is used by communications and computer companies to administer local time world wide.
-	The database is a collection of rules that specify how to calculate local time for a geography given a specific date in time,
-	be it in the past, the present, or the future. This database is updated periodically, often multiple times a year.
-	If you want more information please go to www.iana.org.
+	In addition to administering internet domain names and IP addresses, the
+	IANA (Internet Assigned Numbers Authority) maintains a time zone database 
+	that is used by communications and computer companies to administer local 
+	time world wide. The database is a collection of rules that specify how to 
+	calculate local time for a geography given a specific date in time,
+	be it in the past, the present, or the future. This database is updated 
+	periodically, often multiple times a year.If you want more information
+	please go to http://www.iana.org.
 	
-	IANA's database is the most authoritative database around, but this is a rules based database which needs to be converted to
-	data that computers can readily use.
+	IANA's database is the most authoritative database around, but this is a 
+	__rules-based__ database which needs to be converted to data that computers
+	can readily use. 
 
-	tzLib runs a PHP query on an HTTP server to obtain the timezone data that is required to maintain the IOT devices local settings
-	and to perform DST transitions at the proper time. PHP uses IANA rules to create the database that we access. https://pecl.php.net/package/timezonedb.
+	tzLib runs a PHP query on an HTTP server to obtain the timezone data that is 
+	required to maintain the IOT devices local settings and to perform DST 
+	transitions at the proper time. PHP uses IANA rules to create the database 
+	that we access. https://pecl.php.net/package/timezonedb.
 
 
 
