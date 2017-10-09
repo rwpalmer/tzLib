@@ -3,7 +3,7 @@
 
   This document describes how tzLib's author created a virtual HTTP server for
   developing and testing tzLib, and is provided to help those who might wish
-  to run tzLib using their own server. 
+  to run tzLib using a server that they control. 
   
   There are dozens of other ways to create the required server. The author
   selected this approach becuse it is easy, free,  and can be used on computers 
@@ -13,8 +13,8 @@
   The author built his server on the laptop that he uses every day. It is a 
   Lenovo ThinkPad with a 1.6GHz Intel i7 quad-core processor with 10GB of RAM, 
   and a 500GB hard disk. The Thinkpad runs a Windows 7 64-bit OS. The server
-  runs as a virtual machine, in the background, and does not impact normal
-  usage. 
+  runs as a virtual machine, in the background, and does not impact other
+  applications running under Windows. 
   
 ### Step 1: Download and Install Oracle's VirtualBox Software 
   As mentioned above, a version of VirtualBox is available for numerous 
@@ -155,27 +155,49 @@
     syntax will vary by OS, but should be similar to the authors commands
 	which are detailed below.
 	
-	The author used pscp.exe for Windows which was downloaded from: 
+	The author used Putty SCP (pscp.exe) for Windows, downloaded from: 
 	https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
 		 
-    The SCP transfer process:
+    SCP transfer process:
     - Open a Windows command line
-    - Change directory to the folder containing GetJSON.php and GetTzDbVersion.php
+    - Change directory to the folder containing getJSON.php and 
+	  getDbVersion.php
     - Issue the following commands:
-        pscp GetJSON.php <username>@<server_ipaddress>:/var/www/html/tzLib
-		pscp GetDbVersion.php <username>@<server_ipaddress>:/var/www/html/tzLib
+        pscp getJSON.php <username>@<server_ipaddress>:/var/www/html/tzLib
+		pscp getDbVersion.php <username>@<server_ipaddress>:/var/www/html/tzLib
 			
-        The first time you use SCP with this host, you may be asked if you trust
-        the host, or if you want to cache the host's key.
+        The first time you use SCP with this host, you may be asked if you
+		trust the host, or if you want to cache the host's key.
 		
-        You will then be prompted to enter your server password, 
-		and the file will be transferred.
+        After each command, you will be prompted to enter your server password, 
+		before the file is transferred.
 
-	To verify that every thing is working right,
+	To verify that every thing is working correctly,
     -	open a browser and enter: 
-		http://<your browser's IP address>/tzLib/GetTzDbVersion.php
-		This should display the version of the time zone database on your server. 
-		The version should be 2017.2 or later.
+		http://<your browser's IP address>/tzLib/getDbVersion.php
+		This should display the version of the time zone database on your 
+		server. The version should be 2017.2 or later. 
+		
+		If the database version displays as 'System.0', you're still running 
+		on the time zone database that was distributed with PHP. In that case,
+		verify that the php.ini file was updated correctly, and verify that 
+		your system was rebooted after the php.ini update. 
+		
+    Notes: 
+        - getJSON.php does not return any output when it is executed from a 
+          browser. 
+        - If you go to https://www.iana.org/time-zones, you can subscribe to
+          IANA's mailing list to receive notifications each time they update
+          their database. PHP will release their version shortly after IANA
+          releases theirs. getDbVersion.php will tell you when the PHP version
+          is available.
+        - It is not critical to keep your time zone database updated unless
+          IANA changes impact a timezone that your application services.
+        - It is possible to automate the database upgrade via a root crontab
+          with a command like "echo '' | pecl upgrade timezonedb", but it is
+		  best to plan upgrades, and to have a roll-back strategy in place ...
+		  should something go wrong. 
+		
 	
     	
 	  

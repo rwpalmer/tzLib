@@ -54,7 +54,7 @@ Please feel free to contact the author/maintainer if you have any suggestions,
 or if you would like to participate in this project.
 
 Many thanks to Kasper Kamperman for suggesting the move from Java to PHP, and
-for helping to assemble the PHP code.
+for helping to assemble the PHP code used in this project.
 
 
 
