@@ -17,8 +17,6 @@ void setup() {
     //tzWipeEEPROM();   // <-- When active, this erases time zone data from the EEPROM, so testing can be done with a "new" device. 
     tzSetDefaultZoneId((char*)"America/New_York");  // <-- This changes the default time zone assigned to new devices from "UCT" to ...
     tzSetEepromLocation(256);   //  <-- This sets the EEPROM location where time zone information should be stored (default = 0);
-    tzSetHttpHost((char*)"208.85.39.75");
-    tzSetHttpPath((char*)"/tzLib/getJSON.php");
     
 
     tzSetup();  // <----------- This function configures the devices time zone offset, and DST settings
