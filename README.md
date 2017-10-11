@@ -7,13 +7,13 @@
 	
 	-	Extremely easy to implement ... Most implementations only require these
 		three lines of code:
-		  Setup() {
-	         tzSetDefaultZoneId("<time zone id>"); // <- set default timezone
-             tzSetup();                            // <- configure local time   
-	      }
-	      Loop() {
-             tzLoop();                           // <- perform DST transitions
-	      }
+		   Setup() {
+		      tzSetDefaultZoneId("<time zone id>"); // <- set default timezone
+		      tzSetup();                            // <- configure local time   
+		   }
+		   Loop() {
+		      tzLoop();                           // <- perform DST transitions
+		   }
 
 			CAUTION: This library reads and writes to the devices EEPROM
 			memory. If firmware uses EEPROM memory for other purposes, the 
