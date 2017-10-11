@@ -16,10 +16,10 @@
 	      tzLoop();                           // <- perform DST transitions
 	   }
 ```
-			CAUTION: This library reads and writes to the devices EEPROM
-			memory. If firmware uses EEPROM memory for other purposes, the 
-			EEPROM offset may need to be adjusted. (See the library reference
-			document) 
+		CAUTION: This library reads and writes to the devices EEPROM
+		memory. If firmware uses EEPROM memory for other purposes, the 
+		EEPROM offset may need to be adjusted. (See the library reference
+		document) 
 
 ### HOW THE LIBRARY WORKS 
 
