@@ -66,6 +66,9 @@
 		
 	-  The author is still searching for someone willing to host the PHP on a
 	   data-center quality server. Any leads or contacts would be appreciated.
+	
+	- Please report any issues, suggestions, and comments to the author /
+	  maintainer (rwpalmeribm@gmail.com)
 	   
 
 Many thanks to Kasper Kamperman for suggesting the move from Java to PHP, and
