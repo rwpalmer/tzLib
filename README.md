@@ -4,17 +4,18 @@
 	- 	Configures a device's local time settings each time the device reboots.
 	-	Performs transitions to and from daylight-savings time.
 	-	Designed for use in IOT devices ... uses minimal resources.
-	
 	-	Extremely easy to implement ... Most implementations only require these
 		three lines of code:
+```cpp		
 		   Setup() {
 		      tzSetDefaultZoneId("<time zone id>"); // <- set default timezone
 		      tzSetup();                            // <- configure local time   
 		   }
+		   
 		   Loop() {
 		      tzLoop();                           // <- perform DST transitions
 		   }
-
+```
 			CAUTION: This library reads and writes to the devices EEPROM
 			memory. If firmware uses EEPROM memory for other purposes, the 
 			EEPROM offset may need to be adjusted. (See the library reference
