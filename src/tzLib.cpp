@@ -41,7 +41,9 @@ http_header_t headers[] = {
     //{ "Accept" , "*/*"},
     { NULL, NULL } // NOTE: Always terminate headers will NULL
 };
-
+//for beta testing, initialize HTTP Server settings to: 
+	strncpy(httpHost, "208.85.39.75", sizeof(httpHost);
+	strncpy(httpPath, "tzLib/getJSON.php", sizeof(httpPath);
 
 // This Function is called by tzSetup. It configures local time settings on the device. 
 // At some point in the future, this library might need to support devices that require

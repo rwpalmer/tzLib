@@ -2,14 +2,21 @@
 
 
 	- 	Configures a device's local time settings each time the device reboots.
+	-	Performs transitions to and from daylight-savings time.
+	-	Designed for use in IOT devices ... uses minimal resources.
+	
+	-	Extremely easy to implement ... Most implementations only require these
+		three lines of code:
+			- In the firmware's Setup() section:
+####                tzSetDefaultZoneId("<time zone id>");
+####                tzSetup();
+			- In the firmware's Loop() section:
+####                tzLoop();
 
-	-	Performs transitions to and from daylight-savings time at the
-		appropriate time.
-
-	-	Is designed for implementation in firmware.
-
-	-	Consumes very few device resources
-
+			CAUTION: This library reads and writes to the devices EEPROM
+			memory. If firmware uses EEPROM memory for other purposes, the 
+			EEPROM offset may need to be adjusted. (See the library reference
+			document) 
 
 HOW THE LIBRARY WORKS 
 
@@ -43,12 +50,14 @@ HOW THE LIBRARY WORKS
 
 CURRENT STATE OF THE PROJECT
 
-	-	Library components and example code are in the final stages of alpha
-		testing.
-	-	No known bugs exist at this time.
-	-	The library has only been tested on the Particle Photon.
-	-	Documentation has not been reviewed for spelling, grammer or accuracy.
+	-	Library (0.1.0) exited Alpha Testing with no known bugs on 8 Oct, 2017
+	-	The library has only been tested on the Particle Photon. The author is
+		relying on the community to test on other devices. Please report any
+		test results.
+	-	Documentation has not been reviewed for spelling or grammer, and some
+		inaccuracies may exist. 
 	-	An HTTP server has been brought up on the web to support Beta Testing.
+		At some point the 
 
 Please feel free to contact the author/maintainer if you have any suggestions,
 or if you would like to participate in this project.
