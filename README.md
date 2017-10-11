@@ -7,18 +7,20 @@
 	
 	-	Extremely easy to implement ... Most implementations only require these
 		three lines of code:
-			- In the firmware's Setup() section:
-                <b>tzSetDefaultZoneId("<time zone id>");</b>
-                <b>tzSetup();</b>
-			- In the firmware's Loop() section:
-                <b>tzLoop();</b>
+		  Setup() {
+	         tzSetDefaultZoneId("<time zone id>"); // <- set default timezone
+             tzSetup();                            // <- configure local time   
+	      }
+	      Loop() {
+             tzLoop();                           // <- perform DST transitions
+	      }
 
 			CAUTION: This library reads and writes to the devices EEPROM
 			memory. If firmware uses EEPROM memory for other purposes, the 
 			EEPROM offset may need to be adjusted. (See the library reference
 			document) 
 
-HOW THE LIBRARY WORKS 
+### HOW THE LIBRARY WORKS 
 
 	-	IANA maintains the time zone database that communication companies
 		and OS vendors use to manage local time world wide. 
@@ -40,15 +42,15 @@ HOW THE LIBRARY WORKS
 
 	-	The above is all done in the Setup() portion of firmware. In the 
 		firmwares loop() section, tzLib compares the current epoch time UCT to 
-		the next DST transition time. When that time comes, the transition will
-		be performed. tzLib also compares the current epoch time UCT to a
-		refresh calculated refresh time. When that time comes, fresh JSON data 
-		will be downloaded, and the devices EEPROM will be updated if new data 
-		exists. Refreshing is performed ~ every three weeks for time zones
+		the next DST transition time. When the time arrives, the transition
+		will be performed. tzLib also compares the current epoch time UCT to a
+		calculated refresh time. When that time arrives, fresh JSON data 
+		will be downloaded, and the devices EEPROM will be updated if any new 
+		data exists. Refreshing is performed ~ every three weeks for time zones
 		with DST, and ~ every nine weeks for fixed time zones.
 	
 
-CURRENT STATE OF THE PROJECT
+### CURRENT STATE OF THE PROJECT
 
 	-	Library (0.1.0) exited Alpha Testing with no known bugs on 8 Oct, 2017
 	-	The library has only been tested on the Particle Photon. The author is
@@ -56,11 +58,14 @@ CURRENT STATE OF THE PROJECT
 		test results.
 	-	Documentation has not been reviewed for spelling or grammer, and some
 		inaccuracies may exist. 
-	-	An HTTP server has been brought up on the web to support Beta Testing.
-		At some point the 
+	-	An HTTP server has been brought up on the web to support beta testing.
+	
 
-Please feel free to contact the author/maintainer if you have any suggestions,
-or if you would like to participate in this project.
+### ISSUES
+		
+	-  The author is still searching for someone willing to host the PHP on a
+	   data-center quality server. Any leads or contacts would be appreciated.
+	   
 
 Many thanks to Kasper Kamperman for suggesting the move from Java to PHP, and
 for helping to assemble the PHP code used in this project.
