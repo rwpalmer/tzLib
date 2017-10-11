@@ -8,10 +8,10 @@
 	-	Extremely easy to implement ... Most implementations only require these
 		three lines of code:
 			- In the firmware's Setup() section:
-####                tzSetDefaultZoneId("<time zone id>");
-####                tzSetup();
+                **tzSetDefaultZoneId("<time zone id>");**
+                **tzSetup();**
 			- In the firmware's Loop() section:
-####                tzLoop();
+                **tzLoop();**
 
 			CAUTION: This library reads and writes to the devices EEPROM
 			memory. If firmware uses EEPROM memory for other purposes, the 
