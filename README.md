@@ -39,7 +39,7 @@
 		1.  The time zone's standard offset. 	<-- This never changes
 		2.  The time zone's current offset. 	<-- Changes with DST
 		3.  An abbreviation that describes the current offset
-		4.  The time of the next DST transition	<--Epoch Seconds UCT
+		4.  The time of the next DST transition	<--Epoch Seconds UTC
 		5.  The current offset after the next DST transition.
 		6.  An abbreviation that describes the post transition offset
 
