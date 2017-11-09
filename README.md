@@ -87,7 +87,7 @@
         - Provide production level availability.
 		
 	Please report any issues, suggestions, and comments to the author and
-	  maintainer: rwpalmeribm@gmail.com
+	maintainer: rwpalmeribm@gmail.com
 	   
 
 Many thanks to Kasper Kamperman for suggesting the move from Java to PHP, and
