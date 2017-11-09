@@ -29,7 +29,7 @@ Most implementations only require the addition of these four lines of code:
 *__WARNING__*  
 tzLib stores 128 bytes of time zone data in the devices EEPROM. This 128 byte data block is called the tzBlock.
 * 	Default tzBlock location:  EEPROM byte 0
-* 	If the default location is used for other purposes, developers must use tzLib.setEepromStartByte() to select another location, or tzLib s
+* 	If the default location is used for other purposes, developers must use the tzLib.setEepromStartByte() method to select another location to avoid conflict. 
 *	eg: tzLib.setEepromStartByte(512);
 
 
