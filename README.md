@@ -58,31 +58,27 @@
 
 ### CURRENT STATE OF THE PROJECT
 
-	- Library (0.1.1) is currently in Alpha test.
+	- tzLib (0.1.1) is currently in Alpha test.
         Known defects: none as of 9 Nov 2017
 	
-	- Documentation is still being written.
+Documentation is still being written.
 	
-	- An HTTP server has been brought up on the web to support beta testing.
-        The library is preconfigured to use this server by default. 
+To support beta testing, an HTTP server has been connected to the  web, and the library has been preconfigured to use this server by default. 
 		
-        For those who wish to use their own, or another alternate server:
-          - the library includes methods to configure host name, path, and port.
-          - this project's GitHub repository also includes:
-          - the getJson.php file that tzLib needs to run on the HTTP server.
-          - a document (tzLib_ServerBuild.md) which contains documentation 
-            that details how the author created the virtual HTTP server that
-            he used for alpha testing. Such a server can run as a guest
-            operating system within most Windows, Linux, or Apple systems. 
+For those who wish to use their own, or another alternate server:
+- the library includes methods to configure host name, path, and port.
+- this project's GitHub repository also includes:
+- the getJson.php file that tzLib needs to run on the HTTP server.
+	- a document (tzLib_ServerBuild.md) which contains documentation that details how the author created the virtual HTTP server that he used for alpha testing. Such a server can run as a guest operating system within most Windows, Linux, or Apple systems. 
 
 The search for someone to host the production HTTP server is underway.  We hope to find a corporate entity who can host the PHP file in their data-center, so library users will have a platform that they can rely upon. Please contact the author if you can help, or if you have any contacts who might be able to help in this effort. 
 		
-			Hosting requirements are minimal: 
-				- Host a small PHP file (332 bytes) on an HTTP server.
-				- Keep the server's time zone database current.
-				- Provide production level availability.
+	Hosting requirements are minimal: 
+		- Host a small PHP file (332 bytes) on an HTTP server.
+		- Keep the server's time zone database current.
+		- Provide production level availability.
 		
-	Please report any issues, suggestions, and comments to the author and maintainer: rwpalmeribm@gmail.com
+Please report any issues, suggestions, and comments to the author and maintainer: rwpalmeribm@gmail.com
 	   
 
 Many thanks to Kasper Kamperman for suggesting the move from Java to PHP,
