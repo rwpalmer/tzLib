@@ -3,7 +3,7 @@
 
 - Configures the device's local time settings based on a configured time zone ID and time zone information provided by an HTTP server.
 - Performs Daylight Savings Time transitions when they are scheduled.
-- Designed for use in IOT devices.
+- Designed for use with IOT devices.
 - Enables time-zone changes to be be made via the web.
 - Easy to implement ...
 
@@ -18,10 +18,10 @@ Most implementations only require the addition of these four lines of code:
 	   }
 		   
 	   Loop() {
-	      tzLib.maintainLocaltime();          		// <- 4. perform DST transitions
+	      tzLib.maintainLocaltime();          		// <- 4. perform DST transitions & keeps time zone data current.
 	   }
 ```
-###WARNING:    
+#### !WARNING!:    
 tzLib stores 128 bytes of time zone data in the devices EEPROM. In tzLib parlance, this 128 byte data block is called the tzBlock.
 - 	Default tzBlock location:  EEPROM byte 0
 - 	Alternate location:  Any location from 0 to (EEPROM.length() - 128).
