@@ -21,7 +21,7 @@ Most implementations only require the addition of these four lines of code:
 	      tzLib.maintainLocaltime();          		// <- 4. perform DST transitions & keeps time zone data current.
 	   }
 ```
-#### !WARNING!:    
+**_WARNING_**  
 tzLib stores 128 bytes of time zone data in the devices EEPROM. In tzLib parlance, this 128 byte data block is called the tzBlock.
 - 	Default tzBlock location:  EEPROM byte 0
 - 	Alternate location:  Any location from 0 to (EEPROM.length() - 128).
