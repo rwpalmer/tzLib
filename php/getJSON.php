@@ -37,7 +37,7 @@
 			$dateTimeZoneTZ = new DateTimeZone($timeZoneID);
 		} catch(Exception $e) {
 			echo $e->getMessage(), "<br/>";
-			http_response_code(404);
+			http_response_code(422);
 			return;
 		}
 		

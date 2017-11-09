@@ -1,66 +1,65 @@
-tzLib_Reference			tzLib - The Time Zone Library
-
-	Configures a device's local time zone offset and performs DST 
-	transitions when an IANA defined time zone ID is provided.
-	
-		Who is IANA:
-			In additon to administering IP addresses and domain names, the 
-			Internet Assigned Numbers Authority (IANA) maintains the 
-			time-zone database that is used to determine local time settings
-			by the Communications and IT industries world-wide. IANA updates
-			the database periodically because local time and DST settings are
-			determined by the government bodies that oversee geographic areas,
-			and those governments make changes from time to time.
-
-		What is an IANA time zone ID?
-			Every database needs a key, and the primary key to the IANA time 
-			zone database is called a "time zone ID". Examples: Europe/Paris,
-			America/New_York, Asia/Singapore, ...
-			
-	By default, tzLib uses the IANA time zone ID "UCT" (offset = 0, no DST).
-		- 	tzLib methods allow firmware developers to select a different
-			default.
-		-	tzLib methods can allow device users to override the firmware
-			developers default if the developer provides them with a menu or 
-			map-based time zone selection tool. A number of these are 
-			available on GitHub and elsewhere. 
-		-	Geopositioning software can also use tzLib methods to reconfigure 
-			device settings	as mobile devices move from one time zone to 
-			another.
-	
+#tzLib_Reference			tzLib - The Time Zone Library
 
 REQUIRED METHODS ==============================================================
 
-    tzSetup() -----------------------------------------------------------------
+###tzLib.begin() -------------------------------------------------------------
+        Function and Usage:
+            - Initializes the tzLib class
+			- Searches EEPROM for the tzBlock
+                - records the location of the tzBlock in EEPROM
+                - reads the tzBlock into static memory
+					
+        Syntax:
+            - tzLib.begin()
+			
+        Return: void
+		
+###tzLib.setDefaultZone() ------------------------------------------------------
+ 	
+        Function and Usage:
+            -	Technically "not required", but this method is almost always used.
+            -	Specifies the firmware developer's preferred default time zone
+                ID. This overrides the tzLib default "UTC".
+            -	This call must be placed before tzSetup() in the firmware's
+                Setup() section.
+            -   This Wikipedia page provides a list of valid time zone IDs:
+                https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+				
+		Syntax: 
+			-	tzLib.setDefaultZone("<time zone id>");
+            -   Example: tzLib.setDefaultZone("America/New_York");
+			
+		Return: void
+
+
+    ttzLib.setLocalTime() -----------------------------------------------------------------
 
 		Function and Usage:
-			-	Reads the time zone information stored in EEPROM. 
-			-	Downloads the latest time zone offset and DST transiton data
-				for the time zone ID provided, or stored in EEPROM.
-			- 	Updates EEPROM data when the web provides new data.
+			-	Submits an HTTP query to obtain the latest information for the
+                current time zone. 
+			- 	Updates the tzBlock when the HTTP server provides new data.
 			-	Updates the local device's time zone settings.
 			-	Must be called in the firmware's Setup() section.
-			-	May be called in a Particle function to change the time zone.
-			-	Is periodically called by tzLoop() to refresh EEPROM data.
+			-	Is also called by tzLib.maintainLocalTime() to periodically
+                refresh the tzBlock.
 			
 		Syntax: 
-			-	tzSetup(); <-- when used in tzSetup().
-			-	tzSetup((char*)"<time zone id>");  <-- to change time zone IDs
-				from a quoted string.
-			-	tzSetup(<variable name>); where <variable name> is defined as
-				a char*. 
+			-	tzLib.setLocalTime();
 			
-		Return:
-			EXIT_SUCCESS = EEPROM was validated or updated
-			-1 = The provided time zone ID was not valid
-			-2 = Unable to connect to HTTP server
-			-3 = HTTP server returned an error
-			-4 = JSON parsing error
-			Note: Upon exit, tzSetup also writes a meaningful error message
-			to static memory.  tzGetSetupReturnMsg() retrieves that message.
-	
+		Return: int
+                values: EXIT_SUCCESS / EXIT_FAILURE
+                The EXIT status reflects success or failure of the HTTP 
+                query and JSON parsing only.
+				
+                In the FAILURE case, local time would be set based on EEPROM
+				data that could not be validated via the HTTP query.
+				
+				In typial usage, a developer might want to display an error
+				message in the FAILURE scenario. Such a message can be
+				obtained with tzLib.getHttpStatusMsg().
+				
     
-	tzLoop() ------------------------------------------------------------------
+	tzLib.maintainLocalTime() ------------------------------------------------------------------
 		Function and Usage:
 			-	Automatically adjusts local time settings to or from DST when 
 				Time.now() >= the DST transition time stored in EEPROM.
@@ -74,78 +73,64 @@ REQUIRED METHODS ==============================================================
 			-	Must be placed in the firmware's Loop() section.
 
 		Syntax: 
-			-	tzLoop();
+			-	tzLib.maintainLocalTime();
 			
-		Return: None
+		Return: void
 
 		
 CONFIGURATION METHODS ========================================================
 		
-	tzSetDefaultZoneId() ------------------------------------------------------
- 	
-		Function and Usage:
-			-	Specifies the firmware developer's preferred default time zone
-				ID. This overrides the tzLib default "UCT".
-			-	This call must be placed before tzSetup() in the firmware's
-				Setup() section.
+    tzLib.changeZone() --------------------------------------------------------
+        Function and Usage:
+            -	Changes the device's current time zone
+            -	Often used in a Particle Function to permit the device's time
+                zone to be changed via the web. 
+            	Code sample tzLib301.ino demonstrates this capability.
+				
+        Syntax: tzLib.changeZone("<time zone id>);
+            -	Example:tzLib.changezone("America/Denver");
 
-		Syntax: 
-			-	tzSetDefaultZoneId((char*)"<time zone id>");
-			
-		Return: None
-
-
-    tzSetEepromLocation() -----------------------------------------------------
-
-		Function and Usage:
-			-	Allows firmware developers to select the location in EEPROM
-				where tzLib will store time zone data.
-			-	If used, this method must be invoked before tzSetup() in the 
-				firmware's Setup() section, and it must stay there so tzLib 
-				knows where it can find its data after the device reboots. 
-			-	By default tzLib stores data beginning at EEPROM location 0.
-			-	The current version of the tzInfo_t struct (version 01.00.00a) 
-				requires 92 bytes of EEPROM storage.
-				storage.
-			-	This method does no checking to validate that the location
-				provided is within the scope of EEPROM storage, or that the
-				location does conflict with storage used by other applications.
-				So, please use caution when selecting an EEPROM location.
-			-	If this method is called when valid time zone data exists
-				in the default location, this command will move that data to
-				the new location, and data will be erased from the default
-				location.
-			-	If valid time zone data exists at a non-default location, that
-				data can also be moved if this command is issued twice. 
-				For example, assume we want to move the data from location
-				120 to 330. We could issue the following commands:
-					tzSetEepromLocation(120);
-					tzSetEepromLocation(330);
-				When the first command runs, there is no valid data at the
-				default location, so (120) effectively becomes the new default. 
-				The second command runs, it finds data at the default (120),
-				and that data would be moved to the new location (330).
-
-		Syntax: 
-			-	tzSetEepromLocation(<location>); <-- location is type 'int'.
-			
-		Return: None
+        Return: void
+		
 		
 
-	tzSetHttpHost() -----------------------------------------------------------
-		Function and Usage:
-			-	Specifies the IP address or DNS name of the HTTP server that
-				host the time zone offset and DNS transition data.
-			-	Must be placed before (tzSetup() in the firmware's Setup() 
-				section. 
+    tzLib.setEepromStartByte() ------------------------------------------------
+
+        Function and Usage:
+            -	Allows firmware developers to select the location in EEPROM
+                where tzLib will store the 128-byte tzBlock.
+            -   If used, this method must be invoked before tzSetup() in the 
+                firmware's Setup() section.
+            -   In the case where a tzBlock exists at another EEPROM location, 
+                this command will copy it to the new location, and will
+                overwrite the original location with '0xFF' characters.	This
+                makes is easy for developers to move the tzBlock if/when they
+				need to do so. 
+
+		Syntax: 
+            -	tzLib.setEepromStartByte(<location>);
+                <location> type is int
+                <location> valid range is  0 to (EEPROM.length()-128)
+            -   Example: tzLib.setEepromStartByte(512);
+
+        Return: void
+		
+
+    tzLib.setHostName() -------------------------------------------------------
+        Function and Usage:
+            -	Specifies the IP address or DNS name of the HTTP server that
+                host the time zone offset and DNS transition data.
+            -	Must be placed before (tzSetup() in the firmware's Setup() 
+                section. 
 				
- 		Syntax: 
-			-	tzSetHttpHost((char*)"<server address>");
-			
-		Return: None
+        Syntax: 
+            -	tzSetHostName(("<server address>");
+            -   Example: tzSetHostName("208.85.39.75");
+				
+        Return: void
 
 
-	tzSetHttpPath() -----------------------------------------------------------
+    tzLib.setHostPath() -----------------------------------------------------------
 		Function and Usage:
 			-	Specifies the path to the time zone offset and DNS transition
 				data on the HTTP server.
@@ -153,63 +138,71 @@ CONFIGURATION METHODS ========================================================
 				section. 
 	
  		Syntax: 
-			-	tzSetHttpPath((char*)"<path>");
+			-	tzSetHostPath("<path>");
+				( <path> MUST begin with a slash "/" )
+			-	Example: tzLib.setHostPath("/tzLib/getJSON.php");
 			
-		Return: None
+		Return: void
+
+		
+	tzLib.setHostPort() -----------------------------------------------------------
+		Function and Usage:
+			-	Specifies the server's HTTP port to use
+			-	Must be placed before (tzSetup() in the firmware's Setup() 
+				section.
+            -   When this method is omitted, tzLib will use port 80
+	
+ 		Syntax: 
+			-	tzLib.setHostPort(<port number>);
+            -   Example: tzLib.setHostPort(8080);	
+				
+		Return: void
+
 
 
 QUERY AND TEST METHODS ========================================================
 		
-	tzGetInfo() ---------------------------------------------------------------
-		Function and Usage:
-			-	Returns the data that is stored in EEPROM. The data includes
-				the following elements
-					- 	a version number to identify the EEPROM data
-					- 	time zone ID
-					-	standard time zone offset 	
-					-	current time zone offset	
-					-	Next DST transition time	
-					-	Next DST transition offset
-
-				Notes: 	
-					-	Offsets are recorded as "+/- hours"
-					-	Some offsets include fractional hours
-				
-		Syntax: 
-			-	tzInfo_t <variable name>  = tzGetInfo(); 
-			
-		Return: A tzInfo_t structure containing the EEPROM data.
-		
-		Example:	
-				The command: 	tzinfo_t eeprom = tzGetInfo();
-
-				returns a tzInfo_t structure that exposes the following
-				variable names:
-					eeprom.version				<-- char[10]
-					eeprom.zoneId				<-- char[65]
-					eeprom.stdOffset			<--	float
-					eeprom.currentOffset		<-- float
-					eeprom.transitionTime		<--	time_t	
-					eeprom.transitionOffset		<-- float	
-					
-
-	tzGetSetupReturnMsg()) ----------------------------------------------------
+	tzLib.getHttpStatus()) -------------------------------------------------
 
 		Function and Usage:					
-			-	When tzSetup runs, it records an exit message. This function
-				returns that message. 
+			-	When tzLib.setLocalTime() runs, it returns EXIT_SUCCESS, or 
+				EXIT_FAILURE, and it records a status message to static memory.
+				This function returns the status message.
 	
 		Syntax: 
-			-	tzGetSetupReturnMsg(); 
+			-	tzLib.getHttpStatus();
+            -   Example: If(tzLib.setLocalTime() == EXIT_FAILURE) {
+                             Serial.println(getHttpStatusMsg());
+                         }
 			
-		Return: tzSetup Return message
+		Return: char* to char[65];
 	
-	
-	tzSetTransitionTime() -----------------------------------------------------
+    tzLib.getZone() -----------------------------------------------------------
+
+        Function and Usage:
+            -  returns the current time zone ID
+		
+        Syntax: getZone();
+		
+		Return: char* to char[65];
+		
+		
+    tzLib.getZoneAbbr() -----------------------------------------------------------
+
+        Function and Usage:
+            -  returns the current time zone abbreviation which often changes with
+               with DST transitions.
+		
+        Syntax: getZone();
+		
+		Return: char* to char[65];
+		
+
+	tzLib.setNextTransitionTime() ---------------------------------------------
 	
 		Function and Usage:
-			-	This method allows developers to perform DST transitions for
-				testing purposes. 
+            FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
+			-	Allows developers to perform DST transitions for testing. 
 			-	This method only works if the currenty selected timezone has
 				a pending DST transition.
 			-	Test DST transitions can be reversed by a device reboot or a
@@ -225,32 +218,37 @@ QUERY AND TEST METHODS ========================================================
 				data for the next DST transition should be loaded into EEPROM.
 		
 		Syntax:
-			-	tzSetTransitionTime((time_t)<epoch seconds UCT>);
+            -	tzSetNextTransitionTime((time_t)<epoch seconds UCT>);
+            -   Example: to trigger a transition in 1 hour ...
+                         tzLib.setNextTransitionTime(Time.now() + (60 * 60));
+        Return:	void
 		
-		Return:	none
+					
+    tzLib.transitionNow() -----------------------------------------------------
+        Function and Usage:
+            FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
+            -   Shorthand for tzLib.setNextTransitontime(Time.now());
 		
-		Examples: 
-			-	To trigger an immediate transition ...
-					tzSetTransitionTime(Time.now());
-			-	to trigger a transition in 1 hour ...
-					tzSetTransitionTime(Time.now() + (60 * 60));
+        Syntax:
+            -   tzLib.transitionNow();
+			
+        Return: void
 
 
-	tzWipeEEPROM() ------------------------------------------------------------
+    tzLib.eraseTzEeprom() -----------------------------------------------------
 	
 		Function and Usage:
-			-	This method is FOR DEVELOPMENT AND TEST USAGE ONLY. It should 		never exist in final code.
-			-	When used, tzWipeEEPROM must always execute before tzSetup. In 		this location, tzSetup will reconfigure the EEPROM using the
-				default time zone ID each time the system boots. Any time zone ID changes that were made in real-time will be lost.
-			-	This method allows developers to erase the time zone and 
-				DST transition data from the EEPROM for testing purposes. This
-				makes it easy to validate default settings and the overall
-				OOB (Out of Box) experience. 
-			-	If timezone data is not maintained at the default EEPROM 			location (0), the desired tzSetEepromLocation() statement must
-				be executed before this method is invoked. While this method
-				contains logic to reduce the chances of erasing of the wrong data, one should use care. 
-
+            FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
+            -   This method erases the tzBlock that tzLib stores in EEPROM. 
+                 - the tzBlock is overwritten with '0xFF' characters. 
+                As a result,
+                 - tzLib will forget the configured time zone.
+                 - tzLib will forget the data required to configure local time
+                   and to perform DST transitions.
+            This method is provided to help developers test the 'new device'
+            scenario.
+ 				
 		Syntax:
-			-	tzWipeEEPROM();
+			-	tzLib.eraseTzEeprom();
 		
-		Return:	none
+		Return:	void

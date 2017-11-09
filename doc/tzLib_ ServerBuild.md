@@ -1,5 +1,5 @@
 
-## Creating a Virtual HTTP Server
+## Creating a Virtual HTTP Server for tzLib
 
   This document describes how tzLib's author created a virtual HTTP server for
   developing and testing tzLib, and is provided to help those who might wish
@@ -109,6 +109,22 @@
       - sudo chmod g+rwx /var/www/html/tzLib
              gives the tzLib group read/write/execute permissions to
              the tzLib folder.
+			 
+### Step 6 (OPTIONAL) Install/Configure the PECL/PHP Timezone database	 
+	If this step is skipped, the server will respond to queries based on
+	the	Ubuntu's timezone database. Ubuntu bundles the latest version
+	of this database into each "Ubuntu Server" release, so the database
+	will be as current as the OS release version.
+	
+	If you complete this step, the server will respond to queries based
+	on the PECL/PHP database. This database can be upgraded via a single
+	command whenever a new timezone database is released. With the
+	proper maintenance procedures, this will increase data accuracy, but
+	there is a downside. When new Ubuntu server release are applied, the
+	system may revert to Ubuntu's database. In that case, the following
+	software components need to be removed/uninstalled and then
+	reinstalled. 
+
       - sudo apt-get install php-pear
              adds software required to update the time-zone database
       - sudo apt-get install php-dev
@@ -118,7 +134,7 @@
       - sudo pecl install timezonedb
              installs the latest time zone database from PHP
 	Next, we edit a file with the nano editor		 
-      - sudo nano /etc/php/7.0/apache2/php.ini
+      - sudo nano /etc/php/7.0/apache2/php.ini        (version# may vary) 
           - Scroll down until you see 'Dynamic Extensions' box as shown below
 		  - Add the 'extension=timezonedb.so' statement as shown below
 		  - Verify what you typed, and press ctrl-o
@@ -131,8 +147,11 @@
 			 
              extension=timezonedb.so
 
-    That's it, you're done ... but before we reboot the server, you should
-	capture the	server's IP address with the command
+			 
+### Step 7: Place the PHP code on the server  		 
+    Server configuration is now complete ...
+	Before rebooting the server, we need to capture the server's IP address.
+	
 	  - ifconfig
           The IP address should be displayed on the second line, which 
 		  starts with 'inet'. Please write the IP address down. You will
@@ -143,13 +162,11 @@
 			 
     You're done with the server console, so minimize it.
 	
-
-### Step 6: Place the PHP code on the server
-	Two files  need to be transferred to the /var/www/html/tzLib
-	folder that you created on the server. There are numerous ways to do
-	this. This step will describe how to transfer the file with SCP.  If you 
-	have a better way, go for it. 
-
+	Two PHP files (getJSON.php and getDbVersion.php)  need to be 
+	transferred to the /var/www/html/tzLib folder that you created on the 
+	server. This step will describe how to transfer the file with SCP.  
+	If you prefer another method, feel free to use it. 
+	
     If you don't have an SCP client for your computer, find one and
 	and install it. Then issue the command to transfer the files. The
     syntax will vary by OS, but should be similar to the authors commands

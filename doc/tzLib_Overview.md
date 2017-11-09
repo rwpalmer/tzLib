@@ -54,6 +54,9 @@
 		-   Current DST Offset = (current offset - standard offset)
 		-   isDST = false when (current offset = standard offset)
 		    isDST = true when (current offset != standard offset)
+
+        The returne data can also be used to perform DST transitions when
+		they are scheduled.
 	
 	
 	
@@ -64,38 +67,40 @@
 	the devices EEPROM if any new data is received. The devices local time 
 	settings are then updated. 
 		For the Particle Photon, this involves setting
-		   -   Time.zone() is set to the current offset
-		   -   Time.setDSTOffset() is set to (current - the standard offset)
+		   -   Time.zone() is set to the time zone's standard offset
+		   -   Time.setDSTOffset() is set to (current - standard offset)
 		   -   Time.endDST () is invoked if DSTOffset is 0
 		   -   Time.beginDST() is invoked DSTOffset is not 0
 	
-	For time zones that have DST, tzLib will also reset the local time settings
-	when the next DST transition time is scheduled.
+	For time zones that observe DST, tzLib will also reset the local time
+	when DST transitions occur. 
 	
 	Since it may be a long time between reboots, tzLib validates EEPROM data
 	periodically. This will assure that EEPROM data accurately reflects any
-	IANA database changes, and that DST transition data is updated after each
-	transition occurs. 
+	IANA database changes, and that DST transition data is updated after
+	transitions occur. 
 
 
 
 ### How does tzLib know the correct time zone ID to submit to the server?
 
-	With no other guidance, tzLib will default to UTC (aka GMT, or Zulu). 
-	Firmware developers have the option of overriding this default.
+	Firmware developers normally  set the "default time zone". If they do
+	not do so, tzLib will default to UTC (aka GMT, or Zulu).  
 	
-	tzLib will adopt the default time zone ID on the first boot. The ID will
-	be stored in EEPROM, and the device settings will be configured to 
-	reflect the default time zone's standard offset and DST settings. 
+	On the first boot, tzLib will store the default time zone ID in EEPROM,
+	and the device settings will be configured to reflect the default time
+	zone's standard offset and DST settings. Left in this state, tzLib will
+	also perform scheduled DST transitions for the default time zone. 
 	
-	tzLib includes a method that can change the time zone ID and reset the 
-	devices local time settings at any time. This method can be invoked from 
-	an external internet source (via a Particle function), or by logic within
-	the firmware loop itself. 
+	tzLib includes a method that can change the time zone ID, and this can
+	be evoked via the web (as demonstrated in example tzLib301.ino). Using
+	this capability, developers can provide a time-zone selection tool to 
+	their users. A number of list-based and map-based tools are available.
+	For mobile devices, a geopositioning tool could also be used to change
+	time zones as the device moves from one zone to another. The only 
+	restriction is that selection tools MUST generate a valid IANA time 
+	zone ID (aka Olson name).
 	
-	Developers can provide a time-zone selection tool to their users. A number
-	of list-based and map-based tools are available. For mobile devices, a
-	geopositioning tool could also be used to change time zones as the device
-	moves from one zone to another. The only restriction is that selection
-	tools MUST generate a valid IANA time zone ID (aka Olson name).
+	The tzBlock stored in EEPROM  is updated to reflect time zone changes,
+	so changes will persist across subsequent device reboots. 
 	
