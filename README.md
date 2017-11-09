@@ -21,7 +21,7 @@ Most implementations only require the addition of these four lines of code:
 	   }
 		   
 	   Loop() {
-	      tzLib.maintainLocaltime();          		// <- 4. perform DST transitions & keeps time zone data current.
+	      tzLib.maintainLocaltime();          // <- 4. perform DST transitions & keeps time zone data current.
 	   }
 ```
 **_WARNING_**  
