@@ -5,9 +5,9 @@
 	*	a configured time zone ID.
 	*	time zone details obtained from an HTTP server.
 * Performs Daylight Savings Time transitions when they are scheduled.
-* Designed for use with IOT devices.
+* Designed for IOT devices.
 * Supports user initiated time zone selection via the web.
-* Should support time zone changes triggered by geopositioning software. (not proven yet)
+* Should support time zone changes triggered by geopositioning software. (not yet proven)
 * Easy to implement ...
 
 Most implementations only require the addition of these four lines of code:
