@@ -3,10 +3,11 @@
 
 - Configures the device's local time settings based upon:
 	-	a configured time zone ID.
-	-	and time zone information obtained from an HTTP server.
+	-	time zone details obtained from an HTTP server.
 - Performs Daylight Savings Time transitions when they are scheduled.
 - Designed for use with IOT devices.
 - Supports user initiated time zone selection via the web.
+- Should support time zone changes triggered by geopositioning software. (not proven yet)
 - Easy to implement ...
 
 Most implementations only require the addition of these four lines of code:
