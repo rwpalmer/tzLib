@@ -90,8 +90,8 @@
 	maintainer: rwpalmeribm@gmail.com
 	   
 
-Many thanks to Kasper Kamperman for suggesting the move from Java to PHP, and
-for helping to assemble the PHP code used in this project.
+Many thanks to Kasper Kamperman for suggesting the move from Java to PHP,
+and for helping to assemble the PHP code used in this project.
 
 
 
