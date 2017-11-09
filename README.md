@@ -47,12 +47,12 @@
 	  time zone settings and stores a 128-byte tzBlock in data. The 
 	  tzBlock retains:
 		- The time zone ID, so tzLib can periodically query the HTTP
-              server to keep time zone data current.
-        - The data elements that pertain to local time, so that tzLib
-          can configure local time whenever the system reboots, even if
+		  server to keep time zone data current.
+		- The data elements that pertain to local time, so that tzLib
+		  can configure local time whenever the system reboots, even if
           no network connectivity is available at that time.
-        - DST transition data to assure that tzLib can perform DST
-          transitions at the scheduled time. 
+		- DST transition data to assure that tzLib can perform DST
+		  transitions at the scheduled time. 
 		
 
 
