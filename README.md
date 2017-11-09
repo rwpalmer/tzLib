@@ -66,14 +66,14 @@
 	- An HTTP server has been brought up on the web to support beta testing.
         The library is preconfigured to use this server by default. 
 		
-		For those who wish to use their own, or another alternate server:
+        For those who wish to use their own, or another alternate server:
           - the library includes methods to configure host name, path, and port.
-		  - this project's GitHub repository also includes:
-             - the getJson.php file that tzLib needs to run on the HTTP server.
-             - a document (tzLib_ServerBuild.md) which contains documentation 
-               that details how the author created the virtual HTTP server that
-			   he used for alpha testing. Such a server can run as a guest
-			   operating system within most Windows, Linux, or Apple systems. 
+          - this project's GitHub repository also includes:
+          - the getJson.php file that tzLib needs to run on the HTTP server.
+          - a document (tzLib_ServerBuild.md) which contains documentation 
+            that details how the author created the virtual HTTP server that
+			he used for alpha testing. Such a server can run as a guest
+			operating system within most Windows, Linux, or Apple systems. 
 
 	- The search for someone to host the production HTTP server is underway.
       We hope to find a corporate entity who can host the PHP file in their
