@@ -1,10 +1,12 @@
 # tzLib
 
 
-- Configures the device's local time settings based on a configured time zone ID and time zone information provided by an HTTP server.
+- Configures the device's local time settings based upon:
+	-	a configured time zone ID.
+	-	and time zone information obtained from an HTTP server.
 - Performs Daylight Savings Time transitions when they are scheduled.
 - Designed for use with IOT devices.
-- Enables time-zone changes to be be made via the web.
+- Supports user initiated time zone selection via the web.
 - Easy to implement ...
 
 Most implementations only require the addition of these four lines of code:
