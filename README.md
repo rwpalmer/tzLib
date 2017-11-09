@@ -38,12 +38,12 @@ tzLib stores 128 bytes of time zone data in the devices EEPROM. This 128 byte da
 - IANA maintains the time zone database that communication companies and OS vendors use to manage local time world wide. 
 
 - Using an IANA defined time zone ID as a key to the timezone database, tzLib submits a PHP query to an HTTP Server, and the HTTP Server responds with six data elements:
-	1.  The time zone's standard offset. 		
-	2.  The time zone's current offset.		
-	3.  An abbreviation that describes the current offset.
-	4.  The time of the next DST transition.
-	5.  The current offset after the next DST transition.
-	6.  An abbreviation that describes the post transition offset.
+	1	The time zone's standard offset. 		
+	2	The time zone's current offset.		
+	3	An abbreviation that describes the current offset.
+	4	The time of the next DST transition.
+	5	The current offset after the next DST transition.
+	6	An abbreviation that describes the post transition offset.
 
 - Using the data from the HTTP server, tzLib updates the devices time zone settings and stores a 128-byte tzBlock in EEPROM. The tzBlock retains:
 	- The time zone ID, so tzLib can periodically query the HTTP server to keep time zone data current.
