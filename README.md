@@ -2,7 +2,7 @@
 
 
 * Configures the device's local time settings based upon:
-	*	a configured time zone ID.
+	*	a specified time zone ID.
 	*	time zone details obtained from an HTTP server.
 * Performs Daylight Savings Time transitions when they are scheduled.
 * Designed for IOT devices.
@@ -37,19 +37,10 @@ tzLib stores 128 bytes of time zone data in the devices EEPROM. This 128 byte da
 
 * IANA maintains the time zone database that communication companies and OS vendors use to manage local time world wide. 
 
-* Using an IANA defined time zone ID as a key to the timezone database, tzLib submits a PHP query to an HTTP Server, and the HTTP Server responds with six data elements:
-	*	The time zone's standard offset. 		
-	*	The time zone's current offset.		
-	*	An abbreviation that describes the current offset.
-	*	The time of the next DST transition.
-	*	The current offset after the next DST transition.
-	*	An abbreviation that describes the post transition offset.
+* Using an IANA defined time zone ID as a key, tzLIb issues a PHP query to an HTTP server to obtain the time zone data it needs to configure local time and to perform DST transitions at the proper time. 
 
-* Using the data from the HTTP server, tzLib updates the devices time zone settings and stores a 128-byte tzBlock in EEPROM. The tzBlock retains:
-	* The time zone ID, so tzLib can periodically query the HTTP server to keep time zone data current.
-	* Server provided data elements required to configurelocal time, so that tzLib can configure local time whenever the system reboots, even if no network connectivity is available at that time.
-	* DST transition data to assure that tzLib can perform DST transitions at the scheduled time. 
-		
+* Time zone data is stored in EEPROM to assue that the data is available whenever the system reboots, even if no network connection is available at that time. 
+
 
 
 ## CURRENT STATE OF THE PROJECT
