@@ -5,7 +5,7 @@ The code listed below represents a typical implementation of tzLib. Comments abo
 
 If data is currently stored in your device's EEPROM, please pay special attention to tzLib.setEepromStartByte();
 
-###Sample Code:
+### Sample Code:
 ```
     #include "tzLib.h"
 	void Setup() {
