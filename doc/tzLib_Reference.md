@@ -1,6 +1,7 @@
 # tzLib_Reference			tzLib - The Time Zone Library
-
-## REQUIRED METHODS ==============================================================
+---
+## REQUIRED METHODS
+---
 
 ### tzLib.begin() -------------------------------------------------------------
 Function and Usage:
