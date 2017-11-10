@@ -1,8 +1,8 @@
-#tzLib_Reference			tzLib - The Time Zone Library
+# tzLib_Reference			tzLib - The Time Zone Library
 
-REQUIRED METHODS ==============================================================
+## REQUIRED METHODS ==============================================================
 
-###tzLib.begin() -------------------------------------------------------------
+### tzLib.begin() -------------------------------------------------------------
 Function and Usage:
 *	Initializes the tzLib class
 *	Searches EEPROM for the tzBlock
@@ -14,7 +14,7 @@ Syntax:
 			
 Return: void
 		
-###tzLib.setDefaultZone() ------------------------------------------------------
+### tzLib.setDefaultZone() ------------------------------------------------------
  	
 Function and Usage:
 *	Technically "not required", but this method is almost always used.
