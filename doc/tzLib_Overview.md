@@ -16,7 +16,7 @@ tzLib runs a PHP query on an HTTP server to obtain the timezone data that is req
 
 ### How does tzLib acquire the data required to manage local time settings?
 	
-tzLib leverages the HttpClient library to submit an HTTP POST to an HTTP Server. This POST provides the server with the device's time zone ID, and triggers a PHP script to run on	the server. When the PHP script exits, data related to the submitted time zone ID is returned to tzLib. This includes:
+tzLib queries an HTTP Server via HTTP POST.  This POST provides the server with the device's time zone ID, and triggers a PHP script to run on	the server. When the PHP script exits, data related to the submitted time zone ID is returned to tzLib. This includes:
 	
 *	Standard time zone offset
 *	Current time zone offset
@@ -32,9 +32,7 @@ The returned data can be used to compute:
 
 The returned data can also be used to perform DST transitions when they are scheduled.
 	
-	
-	
-	
+		
 ### What does tzLib do with the data?
 
 Once tzLib has received the JSON file, tzLib parses the JSON and updates the devices EEPROM if any new data is received. The devices local time settings are then updated. 
