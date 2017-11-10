@@ -1,9 +1,9 @@
 # tzLib_Reference			tzLib - The Time Zone Library
 ---
-## REQUIRED METHODS
+## Required Methods
 ---
 
-### tzLib.begin() -------------------------------------------------------------
+### tzLib.begin() -----------------------------------------------------------------------
 Function and Usage:
 *	Initializes the tzLib class
 *	Searches EEPROM for the tzBlock
@@ -15,7 +15,7 @@ Syntax:
 			
 Return: void
 		
-### tzLib.setDefaultZone() ------------------------------------------------------
+### tzLib.setDefaultZone() --------------------------------------------------------------
  	
 Function and Usage:
 *	Technically "not required", but this method is almost always used.
@@ -30,54 +30,43 @@ Syntax:
 Return: void
 
 
-    ttzLib.setLocalTime() -----------------------------------------------------------------
+### ttzLib.setLocalTime() -----------------------------------------------------------------
 
-		Function and Usage:
-			-	Submits an HTTP query to obtain the latest information for the
-                current time zone. 
-			- 	Updates the tzBlock when the HTTP server provides new data.
-			-	Updates the local device's time zone settings.
-			-	Must be called in the firmware's Setup() section.
-			-	Is also called by tzLib.maintainLocalTime() to periodically
-                refresh the tzBlock.
+Function and Usage:
+*	Submits an HTTP query to obtain the latest information for the current time zone. 
+*	Updates the tzBlock when the HTTP server provides new data.
+*	Updates the local device's time zone settings.
+*	Must be called in the firmware's Setup() section.
+*	Is also called by tzLib.maintainLocalTime() to periodically refresh the tzBlock.
 			
-		Syntax: 
-			-	tzLib.setLocalTime();
+Syntax: 
+*	tzLib.setLocalTime();
 			
-		Return: int
-                values: EXIT_SUCCESS / EXIT_FAILURE
-                The EXIT status reflects success or failure of the HTTP 
-                query and JSON parsing only.
+Return: int
+	*	Values: EXIT_SUCCESS / EXIT_FAILURE
+		*	EXIT values reflect success or failure of the HTTP query and JSON parsing only.
+		*	In the FAILURE case, local time would be set based on EEPROM data that could not be validated via the HTTP query.
 				
-                In the FAILURE case, local time would be set based on EEPROM
-				data that could not be validated via the HTTP query.
-				
-				In typial usage, a developer might want to display an error
-				message in the FAILURE scenario. Such a message can be
-				obtained with tzLib.getHttpStatusMsg().
+		*	In typial usage, a developer might want to display an error message in the FAILURE scenario. Such a message can be obtained with tzLib.getHttpStatusMsg().
 				
     
-	tzLib.maintainLocalTime() ------------------------------------------------------------------
-		Function and Usage:
-			-	Automatically adjusts local time settings to or from DST when 
-				Time.now() >= the DST transition time stored in EEPROM.
-			-	Automatically refreshes the data in EEPROM based on a refresh 
-				timer.  The timer is set to refresh every three weeks for time
-				zones with DST transitions, and every 9 weeks for time zones 
-				without DST transistions.   Should a refresh fail, the refresh
-				will be rescheduled based on a retry period which is 11 hours.
-				Actual refresh/retry times are something less than the stated 
-				period to help randomize clients requests.)
-			-	Must be placed in the firmware's Loop() section.
+### tzLib.maintainLocalTime() ------------------------------------------------------------------
+Function and Usage:
+*	Automatically adjusts local time settings to or from DST when Time.now() >= the DST transition time stored in EEPROM.
+*	Automatically refreshes the data in EEPROM based on a refresh timer.  
+	*	The timer is set to refresh every three weeks for time zones with DST transitions, and every 9 weeks for time zones without DST transistions.  
+	*	Should a refresh fail, the refresh will be rescheduled based on a retry period which is 11 hours.
+	*	Actual refresh/retry times are something less than the stated period to help randomize client requests.)
+*	Must be placed in the firmware's Loop() section.
 
-		Syntax: 
-			-	tzLib.maintainLocalTime();
+Syntax: 
+*	tzLib.maintainLocalTime();
 			
-		Return: void
+Return: void
 
-		
-CONFIGURATION METHODS ========================================================
-		
+---		
+## Configuration Methods
+---		
     tzLib.changeZone() --------------------------------------------------------
         Function and Usage:
             -	Changes the device's current time zone
