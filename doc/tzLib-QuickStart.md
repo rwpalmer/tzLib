@@ -1,19 +1,16 @@
-## tzLib Quick-Start Guide
+# tzLib Quick-Start Guide
 
-Most firmware developers will only require the four tzLib methods shown in the following code sample. However, some users will need to use an additional method to configure where tzLib will store it's tzBlock in EEPROM storage.
-	
-By default, tzLib stores the 128-byte tzBlock in EEPROM bytes 0 - 127. When these bytes are not available, the developer must use the tzLib.setEepromStartByte() method to select a new EEPROM location for the tzBlock. For example, if a developer wants tzLib to store the tzBlock starting at EEPROM byte 512, he/she would insert the following line somewhere before the tzLib.setLocalTime() method:			
-```
-tzLib.setEepromStartByte(512);
-```
-	
 
-### A typical / minimal implementation of tzLib 
+The code listed below represents a typical implementation of tzLib. Comments about the functionality and usage of each command / method appear below the code. Further information about each command can be found in the tzLib_Reference.
+
+If data is currently stored in your device's EEPROM, please pay special attention to tzLib.setEepromStartByte();
+
 ```
     #include "tzLib.h"
 	void Setup() {
 		...
 		tzLib.begin();
+		tzLib.setEepromStartByte(0);
 		tzLib.setDefaultzone("America/Chicago");
 		tzLib.setLocalTime();
 		...
@@ -24,29 +21,36 @@ tzLib.setEepromStartByte(512);
 		...
 	}	
 ```		
-### The functionality provided by the above code
+#### The functionality provided by the above code
 
 #### tzLib.begin()
 *	Initializes the tzLib library
-*	Searches EEPROM for the tzBlock, records its location, and loads the tzBlock into static memory
+*	Searches EEPROM for the tzBlock that contains the time zone data that tzLib needs.
+*	When a tzBlock is found, the tzBlock object is copied to static memory, along with the EEPROM location where the tzBlock was found.  
 	
 #### tzLib.setDefaultZone()
-*	Records the default time zone ID in static memory
+*	If the developer does not define a default time zone, the default will be "UTC" (Offset 0, no DST).
+*	When tzLib starts up, it looks for a time zone ID in EEPROM. If none is found, the default time zone is adopted as the device's time zone, and the default time zone ID is written to EEPROM. From that point forward, EEPROM trumps default. This command is therefore ignored after the first boot. You can NOT change time zones by changing the default time zone ID. You can change time zones with the tzLib.changeZone() method, or for testing purposes only, you can use the tzLib.eraseTzEeprom() method to erase the time zone data from EEPROM.
 			
 #### tzLib.setLocalTime()
-*	Queries the HTTP server to get time zone data for the time zone registered in EEPROM storage or for the default time zone if no time zone is registered in EEPROM.
-*	Writes an updated data to EEPROM, if any new data is received from the HTTP server
-*	Configures the device's local time settings
-	*	based on query results if valid data was returned
-	*	based on EEPROM data if no valid data was returned and EEPROM data existed
-	*	to UTC if no data was returned for the default time zone
-				
+*	Queries the HTTP server to get time zone data.
+*	Writes to EEPROM, if the server provides any new time zone data.
+*	Configures the device's local time settings based on the latest data available.
+			
 #### tzLib.maintainLocalTime()
 *	Triggers a DST transition when the scheduled time arrives
 *	Triggers periodic EEPROM refreshes (every 3-9 weeks)
 				   
+#### tzLib.setEepromStartByte()
+*	tzLib stores an object called a tzBlock in EEPROM. This object contains the time zone data that tzLib needs to remember between device reboots. 
+*	tzLib will write the tzBlock to EEPROM bytes 0-127 unless otherwise instructed. The tzLib/setEepromStartByte() method conveys that instruction.
+* 	In the sample code, tzLib.setEepromStartByte(0); reflects the default setting. 
+*	Change the zero (0) to (512) and tzLib will use EEPROM bytes 512 to 639 instead. 
+* 	The start byte can range from 0 to (EEPROM.length() - 128), where EEPROM.length() is the size of your device's EEPROM.
+*	This, and all other configuration methods should appear before tzLib.setLocalTime().
 
-				   
+*	FYI: It is worth noting that when you execute the tzLib.setEepromStartByte() command, you are telling tzLib where you want the tzBlock to be located in EEPROM. If the tzBlock is located in a different location, this method will erase the existing tzBlock, and rewrite it to the new, specified location. The tzBlock location is then updated in static memory so other methods know where the tzBlock now resides. 
+	    
 
 	
 	
