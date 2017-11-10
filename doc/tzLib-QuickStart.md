@@ -37,20 +37,8 @@ If data is currently stored in your device's EEPROM, please pay special attentio
 	*	Case and syntax matter: "america/new_york" would be invalid, as would "America/NewYork".
 *	The default time zone id will be adopted as the device's current time zone ID once tzLib.setLocalTime() determines that it is valid and stores the ID in EEPROM.  From that point forward, "EEPROM trumps default", so the tzLib.setDefaultZone() method will be ignored on subsequent reboots ... unless the tzBlock is erased from EEPROM.
 *	The above logic means that the timezone ID can be changed in EEPROM, without fear that the current timezone would revert back to the default each time  the device is rebooted. 
-	* The current time zone ID can be changed with the tzLib.changeZone() command. This normally runs in a Particle Function that is executed via the web ... permitting the timezone to be changed without the need for a firmware change and compile.
-	* For testing purposes, the tzLib.eraseTzBlock() method can be used to erase the tzBlock from memory ... so the tzLib.setDefaultZone() method can again be used to set the current time zone ID. 
-
-	
-### tzLib.setLocalTime()
-*	Must run in the firmware setup();
-*	Queries the HTTP server to get time zone data. Returns type int with values: EXIT_SUCCESS or EXIT_FAILURE to denote the success or failure of the query. After this methods runs, tzLib.getHttpStatus() method can be run to obtain a status message that either reports success, or why the query failed. 
-*	Updates the tzBlock in EEPROM whenever the server provides new data.
-*	Configures the device's local time settings based on the latest data available.
-			
-### tzLib.maintainLocalTime()
-*	Must run in the firmware loop().
-*	Triggers a DST transition when the scheduled time arrives
-*	Triggers periodic EEPROM refreshes (every 3-9 weeks)
+	* The current time zone ID can be changed at any time with the tzLib.changeZone() command. This normally runs in a Particle Function that is executed via the web ... permitting the timezone to be changed without the need for a firmware change or compile.
+	* For testing purposes, the tzLib.eraseTzBlock() method can be used to erase the tzBlock from memory ... so the tzLib.setDefaultZone() method can again be used to set the current time zone ID. This method should NEVER be used in production firmware. 
 				   
 ### tzLib.setEepromStartByte()
 tzLib stores an object called a tzBlock in EEPROM. This object contains the time zone data that tzLib needs to remember when the device reboots.  tzLib will write the tzBlock to EEPROM bytes 0-127 unless otherwise instructed. The tzLib.setEepromStartByte() method conveys that instruction.
@@ -62,6 +50,17 @@ tzLib stores an object called a tzBlock in EEPROM. This object contains the time
 		*	Valid locations range from 0 to (EEPROM.length() - 128), where EEPROM.length() is the size of your device's EEPROM.
 
 FYI: It is worth noting that when you execute the tzLib.setEepromStartByte() command, you are telling tzLib where you want the tzBlock to be located in EEPROM. If the tzBlock is located in a different location, this method will erase the existing tzBlock, and rewrite it to the new, specified location. The tzBlock location is then updated in static memory so other methods know where the tzBlock now resides. 
+
+### tzLib.setLocalTime()
+*	Must run in the firmware setup();
+*	Queries the HTTP server to get time zone data. Returns type int with values: EXIT_SUCCESS or EXIT_FAILURE to denote the success or failure of the query. After this methods runs, tzLib.getHttpStatus() method can be run to obtain a status message that either reports success, or why the query failed. 
+*	Updates the tzBlock in EEPROM whenever the server provides new data.
+*	Configures the device's local time settings based on the latest data available.
+			
+### tzLib.maintainLocalTime()
+*	Must run in the firmware loop().
+*	Triggers a DST transition when the scheduled time arrives
+*	Triggers periodic EEPROM refreshes (every 3-9 weeks)
 	    
 
 	
