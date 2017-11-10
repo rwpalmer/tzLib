@@ -43,11 +43,10 @@ Syntax:
 *	tzLib.setLocalTime();
 			
 Return: int
-	*	Values: EXIT_SUCCESS / EXIT_FAILURE
-		*	EXIT values reflect success or failure of the HTTP query and JSON parsing only.
-		*	In the FAILURE case, local time would be set based on EEPROM data that could not be validated via the HTTP query.
-				
-		*	In typial usage, a developer might want to display an error message in the FAILURE scenario. Such a message can be obtained with tzLib.getHttpStatusMsg().
+*	Values: EXIT_SUCCESS / EXIT_FAILURE
+*	Return values reflect success or failure of the HTTP query and JSON parsing only.
+	*	In the FAILURE case, local time would be set based on EEPROM data that could not be validated via the HTTP query.
+	*	In typial usage, a developer might want to display an error message in the FAILURE scenario. Such a message can be obtained with tzLib.getHttpStatusMsg().
 				
     
 ### tzLib.maintainLocalTime() ------------------------------------------------------------------
