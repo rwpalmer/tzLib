@@ -2,8 +2,10 @@
 
 Most firmware developers will only require the four tzLib methods shown in the following code sample. However, some users will need to use an additional method to configure where tzLib will store it's tzBlock in EEPROM storage.
 	
-By default, tzLib stores the 128-byte tzBlock in EEPROM bytes 0 - 127. When these bytes are not available, the developer must use the tzLib.setEepromStartByte() method to select a new EEPROM location for the tzBlock. For example, if a developer wants tzLib to store the tzBlock starting at EEPROM byte 512, he/she would insert the following line somewhere before tzLib.setLocalTime():			tzLib.setEepromStartByte(512);
-
+By default, tzLib stores the 128-byte tzBlock in EEPROM bytes 0 - 127. When these bytes are not available, the developer must use the tzLib.setEepromStartByte() method to select a new EEPROM location for the tzBlock. For example, if a developer wants tzLib to store the tzBlock starting at EEPROM byte 512, he/she would insert the following line somewhere before the tzLib.setLocalTime() method:			
+```
+tzLib.setEepromStartByte(512);
+```
 	
 
 ### A typical / minimal implementation of tzLib 
