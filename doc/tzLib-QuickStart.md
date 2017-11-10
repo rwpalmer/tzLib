@@ -12,7 +12,7 @@ If data is currently stored in your device's EEPROM, please pay special attentio
 		...
 		tzLib.begin();
 		tzLib.setEepromStartByte(0);
-		tzLib.setDefaultzone("America/Chicago");
+		tzLib.setDefaultzone("America/New_York");
 		tzLib.setLocalTime();
 		...
 	}
@@ -32,9 +32,15 @@ If data is currently stored in your device's EEPROM, please pay special attentio
 ### tzLib.setDefaultZone()
 *	This method should be executed before tzLib.setLocalTime().
 *	If the developer does not set the default time zone, tzLib will default to "UTC" (Offset 0, no DST).
-*	When tzLib starts up, it looks for a time zone ID in EEPROM. If none is found, the default time zone is adopted as the device's time zone. Once validated, the default time zone ID is written to EEPROM. From that point forward, "EEPROM trumps default". This command is therefore ignored after the first boot. While you can initially set the devices timezone with this method, it can not be used to change the timezone once a timezone has been registered in EEPROM.
-	*	For changing time zones, refer to the tzLib.changeZone() method and the tzLib.eraseTzEeprom() method.
-			
+*	In the sample code, the tzLib.setDefaultzone() statement sets the default time zone ID to "America/New_York". 
+	*   Assuming this is not your preference, this Wikipedia page provides a list of the valid time zone IDs that can be used:          https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+	*	Case and syntax matter: "america/new_york" would be invalid, as would "America/NewYork".
+*	The default time zone id will be adopted as the device's current time zone ID once tzLib.setLocalTime() determines that it is valid and stores the ID in EEPROM.  From that point forward, "EEPROM trumps default", so the tzLib.setDefaultZone() method will be ignored on subsequent reboots ... unless the tzBlock is erased from EEPROM.
+*	The above logic means that the timezone ID can be changed in EEPROM, without fear that the current timezone would revert back to the default each time  the device is rebooted. 
+	* The current time zone ID can be changed with the tzLib.changeZone() command. This normally runs in a Particle Function that is executed via the web ... permitting the timezone to be changed without the need for a firmware change and compile.
+	* For testing purposes, the tzLib.eraseTzBlock() method can be used to erase the tzBlock from memory ... so the tzLib.setDefaultZone() method can again be used to set the current time zone ID. 
+
+	
 ### tzLib.setLocalTime()
 *	Must run in the firmware setup();
 *	Queries the HTTP server to get time zone data. Returns type int with values: EXIT_SUCCESS or EXIT_FAILURE to denote the success or failure of the query. After this methods runs, tzLib.getHttpStatus() method can be run to obtain a status message that either reports success, or why the query failed. 
