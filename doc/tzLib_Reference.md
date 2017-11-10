@@ -3,33 +3,30 @@
 REQUIRED METHODS ==============================================================
 
 ###tzLib.begin() -------------------------------------------------------------
-        Function and Usage:
-            - Initializes the tzLib class
-			- Searches EEPROM for the tzBlock
-                - records the location of the tzBlock in EEPROM
-                - reads the tzBlock into static memory
+Function and Usage:
+*	Initializes the tzLib class
+*	Searches EEPROM for the tzBlock
+	*	records the location of the tzBlock in EEPROM
+	*	reads the tzBlock into static memory
 					
-        Syntax:
-            - tzLib.begin()
+Syntax:
+	*	tzLib.begin()
 			
-        Return: void
+Return: void
 		
 ###tzLib.setDefaultZone() ------------------------------------------------------
  	
-        Function and Usage:
-            -	Technically "not required", but this method is almost always used.
-            -	Specifies the firmware developer's preferred default time zone
-                ID. This overrides the tzLib default "UTC".
-            -	This call must be placed before tzSetup() in the firmware's
-                Setup() section.
-            -   This Wikipedia page provides a list of valid time zone IDs:
-                https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+Function and Usage:
+*	Technically "not required", but this method is almost always used.
+*	Specifies the firmware developer's preferred default time zone ID. This overrides the tzLib default "UTC".
+*	This call must be placed before tzSetup() in the firmware's setup() section.
+*	This Wikipedia page provides a list of valid time zone IDs: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 				
-		Syntax: 
-			-	tzLib.setDefaultZone("<time zone id>");
-            -   Example: tzLib.setDefaultZone("America/New_York");
+Syntax: 
+*	tzLib.setDefaultZone("<time zone id>");
+*	Example: tzLib.setDefaultZone("America/New_York");
 			
-		Return: void
+Return: void
 
 
     ttzLib.setLocalTime() -----------------------------------------------------------------
