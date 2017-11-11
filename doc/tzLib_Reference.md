@@ -21,11 +21,11 @@ Example: tzLib.begin();
 Function and Usage:
 *	Technically "not required", but this method is almost always used.
 *	Specifies the firmware developer's preferred default time zone ID. This overrides the tzLib default "UTC".
-*	This call must be placed before tzSetup() in the firmware's setup() section.
+*	This call must be placed before tzLib.setLocalZone() method in the firmware's setup() section.
 *	This Wikipedia page provides a list of valid time zone IDs: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 *	Remember, time zone IDs are case and syntax sensitive.
 				
-Declared:	void setDefaultZone(char* id); // where id is char[65]
+Declared:	void setDefaultZone(char* id); (max size of id is 64 characters)
 				
 Example: tzLib.setDefaultZone("America/New_York");
 
@@ -75,7 +75,7 @@ Function and Usage:
 *	Remember, time zone IDs are case and syntax sensitive.
 
 				
-Declared: void changeZone(char* id);  // where id is char[65]
+Declared: void changeZone(char* id);  // (max size of id is 64 characters)
 
 Example:	tzLib.changezone("America/Denver");
 
@@ -98,7 +98,7 @@ Function and Usage:
 *	Specifies the IP address or DNS name of the HTTP server that host the time zone offset and DNS transition data.
 *	Must be placed before (tzSetup() in the firmware's Setup() section. 
 				
-Declared: 	void setHostName(char* host);	// where host is char[97]
+Declared: 	void setHostName(char* host);	// (max size of host is 96 characters)
 
 Example: 	tzLib.setHostName("208.85.39.75");
 
@@ -109,7 +109,7 @@ Function and Usage:
 *	Specifies the path to the time zone offset and DNS transition data on the HTTP server.
 *	Must be placed before (tzSetup() in the firmware's Setup() section. 
 	
-Declared: void setHostPath(char* path); 	// where path is char[97] - Note: path MUST begin with a slash "/"
+Declared: void setHostPath(char* path); 	// (max size of path is 96 characters - Note: path MUST begin with a slash "/"
 
 Example: tzLib.setHostPath("/tzLib/getJSON.php");
 
