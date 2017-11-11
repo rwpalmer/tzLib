@@ -182,6 +182,7 @@ Syntax:	tzSetNextTransitionTime((time_t)<epoch seconds UCT>);
 Examples:
 *	tzLib.setNextTransitionTime(Time.now() + (60*60)); // trigger a transition in 1 hour ...
 *	tzLib.setNextTransitionTime(1582165220);	// trigger a transition at a specified time.
+
 Online tools, like the following, can be used to convert date/time to epoch seconds. http://www.onlineconversion.com/unix_time.htm
 	
 				
