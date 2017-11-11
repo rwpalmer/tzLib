@@ -36,7 +36,7 @@ Function and Usage:
 *	Submits an HTTP query to obtain the latest information for the current time zone. 
 *	Updates the tzBlock when the HTTP server provides new data.
 *	Updates the local device's time zone settings.
-*	Must be called in the firmware's Setup() section.
+*	Must be called in the firmware's setup() section. (In a test scenario, this method may also be called from loop() ... for instance to reset time after a DST transition test.)
 *	Is also called by tzLib.maintainLocalTime() to periodically refresh the tzBlock.
 	
 Declared:	int setLocalTime(void);
@@ -84,7 +84,7 @@ Example:	tzLib.changezone("America/Denver");
 
 Function and Usage:
 *	Allows firmware developers to select the location in EEPROM where tzLib will store the 128-byte tzBlock.
-*	If used, this method must be invoked before tzSetup() in the firmware's Setup() section.
+*	If used, this method must be invoked before tzLib.setLocalTime() in the firmware's setup() section.
 *	In the case where a tzBlock exists at another EEPROM location, this command will copy it to the new location, and will overwrite the original location with '0xFF' characters.	This makes is easy for developers to move the tzBlock if/when they need to do so. 
 				
 Declared: void setEepromStartByte(int sb);	// where sb can be any value from 0 to (EEPROM.length()-128)
@@ -96,7 +96,7 @@ Example: tzLib.setEepromStartByte(512);
 
 Function and Usage:
 *	Specifies the IP address or DNS name of the HTTP server that host the time zone offset and DNS transition data.
-*	Must be placed before (tzSetup() in the firmware's Setup() section. 
+*	Must be placed before tzLib.setLocalTime() in the firmware's setup() section. 
 				
 Declared: 	void setHostName(char* host);	// (max size of host is 96 characters)
 
@@ -107,7 +107,7 @@ Example: 	tzLib.setHostName("208.85.39.75");
 
 Function and Usage:
 *	Specifies the path to the time zone offset and DNS transition data on the HTTP server.
-*	Must be placed before (tzSetup() in the firmware's Setup() section. 
+*	Must be placed before (tzLib.setLocalTime() in the firmware's setup() section. 
 	
 Declared: void setHostPath(char* path); 	// (max size of path is 96 characters - Note: path MUST begin with a slash "/"
 
@@ -118,7 +118,7 @@ Example: tzLib.setHostPath("/tzLib/getJSON.php");
 
 Function and Usage:
 *	Specifies the server's HTTP port to use
-*	Must be placed before (tzSetup() in the firmware's setup() section.
+*	Must be placed before tzLib.setLocalTime() in the firmware's setup() section.
 *	When this method is omitted, tzLib will use port 80
 	
 Declared: 	void setHostPort(uint16_t port);
