@@ -188,7 +188,7 @@ Return:		void
 					
 ### tzLib.transitionNow() ---------------------------------------------------------------
 Function and Usage:
-	FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
+FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
 	*	Shorthand for tzLib.setNextTransitontime(Time.now());
 		
 Syntax:		tzLib.transitionNow();
@@ -197,10 +197,10 @@ Return: void
 
 
 ###	tzLib.eraseTzEeprom() ---------------------------------------------------------------
+FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
 	
 Function and Usage:
-	FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
-*	This method erases the tzBlock that tzLib stores in EEPROM. 
+*	This method erases the tzBlock from EEPROM 
 *	The tzBlock is overwritten with '0xFF' characters.  As a result,
 	*	tzLib will forget the configured time zone.
 	*	tzLib will forget the data required to configure local time and to perform DST transitions.
