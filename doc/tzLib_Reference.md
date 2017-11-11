@@ -125,7 +125,6 @@ Declared: 	void setHostPort(uint16_t port);
 
 Example: 	tzLib.setHostPort(8080);	
 			
-
 ---
 Query and Test Methods
 ---
