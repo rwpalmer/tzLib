@@ -168,7 +168,9 @@ Return: 	char* to char[65];
 
 ### tzLib.setNextTransitionTime() -------------------------------------------------------
 FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
+
 Function and Usage:
+
 This methold provides a way to test the impact of DST transitions on the device and any logs or notifications that it may generate.
 *	Allows developers to set the time when the the next DST transition will occur. 
 * 	When the transition time arrives, tzLib.maintainLocalTime() will trigger the transition as if it were the official transition time. 
@@ -184,7 +186,9 @@ Return:		int (EXIT_SUCCESS / EXIT_FAILURE)
 					
 ### tzLib.transitionNow() ---------------------------------------------------------------
 FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
+
 Function and Usage:
+
 This methold provides a way to test the impact of DST transitions on the device and any logs or notifications that it may generate. 
 *	Allows developers to perform a pending DST transition immediately. Unlike tzLib.setNextTransitionTime(), this method performs the transition itself, so this method can be executed anywhere in firmware setup() or loop().
 *	This method only works if the currenty selected timezone has a pending DST transition.
