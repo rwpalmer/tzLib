@@ -60,7 +60,7 @@ Function and Usage:
 
 Declared: void maintainLocalTime(void);
 
-Example: maintainLocalTime();
+Example: tzLib.maintainLocalTime();
 
 
 ---		
@@ -76,7 +76,7 @@ Function and Usage:
 				
 Declared: void changeZone(char* id);  // where id is char[65]
 
-Example:tzLib.changezone("America/Denver");
+Example:	tzLib.changezone("America/Denver");
 
 
 ### tzLib.setEepromStartByte() ----------------------------------------------------------
@@ -99,7 +99,7 @@ Function and Usage:
 				
 Declared: 	void setHostName(char* host);	// where host is char[97]
 
-Example: 	tzSetHostName("208.85.39.75");
+Example: 	tzLib.setHostName("208.85.39.75");
 
 
 ### tzLib.setHostPath() -----------------------------------------------------------------
@@ -152,7 +152,7 @@ Function and Usage:
 		
 Declared: 	char* getZone(void); 
 
-Example: 	Serial.println(getZone());
+Example: 	Serial.println(tzLib.getZone());
 		
 Return: 	char* to char[65];
 		
@@ -165,7 +165,7 @@ Function and Usage:
 		
 Declared: 	char* getZoneAbbr(void);
 
-Example:	Serial.println(getZoneAbbr());
+Example:	Serial.println(tzLib.getZoneAbbr());
 		
 Return: 	char* to char[6];
 		
