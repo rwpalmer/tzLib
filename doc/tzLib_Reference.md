@@ -10,8 +10,7 @@ Function and Usage:
 	*	records the location of the tzBlock in EEPROM
 	*	reads the tzBlock into static memory
 					
-Syntax:
-	*	tzLib.begin()
+Syntax:	tzLib.begin()
 			
 Return: void
 		
@@ -22,10 +21,11 @@ Function and Usage:
 *	Specifies the firmware developer's preferred default time zone ID. This overrides the tzLib default "UTC".
 *	This call must be placed before tzSetup() in the firmware's setup() section.
 *	This Wikipedia page provides a list of valid time zone IDs: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+*	Remember, time zone IDs are case and syntax sensitive.
 				
-Syntax: 
-*	tzLib.setDefaultZone("<time zone id>");
-*	Example: tzLib.setDefaultZone("America/New_York");
+Syntax: tzLib.setDefaultZone("<time zone id>");
+
+Example: tzLib.setDefaultZone("America/New_York");
 			
 Return: void
 
@@ -42,14 +42,14 @@ Function and Usage:
 Syntax: 
 *	tzLib.setLocalTime();
 			
-Return: int
-*	Values: EXIT_SUCCESS / EXIT_FAILURE
+Return: int (EXIT_SUCCESS / EXIT_FAILURE)
 *	Return values reflect success or failure of the HTTP query and JSON parsing only.
 	*	In the FAILURE case, local time would be set based on EEPROM data that could not be validated via the HTTP query.
-	*	In typial usage, a developer might want to display an error message in the FAILURE scenario. Such a message can be obtained with tzLib.getHttpStatusMsg().
+	*	This method also logs a status message to static memory, for developer troubleshooting, and/or logging. This status message can be obtained using the tzLib.getHttpStatus() method;
 				
     
 ### tzLib.maintainLocalTime() -----------------------------------------------------------
+
 Function and Usage:
 *	Automatically adjusts local time settings to or from DST when Time.now() >= the DST transition time stored in EEPROM.
 *	Automatically refreshes the data in EEPROM based on a refresh timer.  
@@ -67,6 +67,7 @@ Return: void
 ## Configuration Methods
 ---		
 ### tzLib.changeZone() ------------------------------------------------------------------
+
 Function and Usage:
 *	Changes the device's current time zone
 *	Often used in a Particle Function to permit the device's time zone to be changed via the web.  Code sample "tzLib301.ino" demonstrates this capability.
@@ -96,6 +97,7 @@ Return: void
 		
 
 ### tzLib.setHostName() -----------------------------------------------------------------
+
 Function and Usage:
 *	Specifies the IP address or DNS name of the HTTP server that host the time zone offset and DNS transition data.
 *	Must be placed before (tzSetup() in the firmware's Setup() section. 
@@ -108,6 +110,7 @@ Return: void
 
 
 ### tzLib.setHostPath() -----------------------------------------------------------------
+
 Function and Usage:
 *	Specifies the path to the time zone offset and DNS transition data on the HTTP server.
 *	Must be placed before (tzSetup() in the firmware's Setup() section. 
@@ -119,6 +122,7 @@ Return: void
 
 		
 ###	tzLib.setHostPort() -----------------------------------------------------------------
+
 Function and Usage:
 *	Specifies the server's HTTP port to use
 *	Must be placed before (tzSetup() in the firmware's setup() section.
@@ -137,7 +141,7 @@ Query and Test Methods
 ### tzLib.getHttpStatus()) --------------------------------------------------------------
 
 Function and Usage:					
-*	When tzLib.setLocalTime() runs, it returns EXIT_SUCCESS, or EXIT_FAILURE, and it records a status message to static memory. This function returns the status message.
+*	When tzLib.setLocalTime() runs, it returns EXIT_SUCCESS, or EXIT_FAILURE, and it records a status message to static memory. This method returns that status message to help with troubleshooting and/or logging purposes.
 	
 Syntax: 	tzLib.getHttpStatus();
 Example:    `If(tzLib.setLocalTime() == EXIT_FAILURE) {`
@@ -149,7 +153,8 @@ Return: char* to char[65];
 ### tzLib.getZone() ---------------------------------------------------------------------
 
 Function and Usage:
-*	returns the current time zone ID
+*	Allows developers to include the time zone ID in logs or notifications.
+*	Returns the current time zone ID
 		
 Syntax: 	getZone();
 		
@@ -159,11 +164,12 @@ Return: 	char* to char[65];
 ### tzLib.getZoneAbbr() -----------------------------------------------------------------
 
 Function and Usage:
-*	returns the current time zone abbreviation which often changes with with DST transitions.
+*	Allows developers to include the time zone abbreviation in logs or notifications.
+*	Returns the current time zone abbreviation, which often change with DST transitions.
 		
 Syntax: 	getZone();
 		
-Return: 	char* to char[65];
+Return: 	char* to char[6];
 		
 
 ### tzLib.setNextTransitionTime() -------------------------------------------------------
