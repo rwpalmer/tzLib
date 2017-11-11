@@ -137,9 +137,9 @@ Declared: 	char* getHttpStatus(void);
 
 Example:    
 ```cpp
-	If(tzLib.setLocalTime() == EXIT_FAILURE) {
-		Serial.println(getHttpStatusMsg());
-	}
+If(tzLib.setLocalTime() == EXIT_FAILURE) {
+	Serial.println(getHttpStatusMsg());
+}
 ```			
 Return: char* to char[65];
 	
