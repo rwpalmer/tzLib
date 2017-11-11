@@ -86,7 +86,7 @@ Function and Usage:
 *	If used, this method must be invoked before tzSetup() in the firmware's Setup() section.
 *	In the case where a tzBlock exists at another EEPROM location, this command will copy it to the new location, and will overwrite the original location with '0xFF' characters.	This makes is easy for developers to move the tzBlock if/when they need to do so. 
 				
-Declared: void setEepromStartByte(int sb);	// where sb can be any value between 0 and (EEPROM.length()-128)
+Declared: void setEepromStartByte(int sb);	// where sb can be any value from 0 to (EEPROM.length()-128)
 
 Example: tzLib.setEepromStartByte(512);
 
