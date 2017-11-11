@@ -127,7 +127,8 @@ Example: 	tzLib.setHostPort(8080);
 
 ---
 Query and Test Methods
----		
+---	
+	
 ### tzLib.getHttpStatus()) --------------------------------------------------------------
 
 Function and Usage:					
