@@ -167,7 +167,7 @@ Return: 	char* to char[65];
 		
 
 ### tzLib.setNextTransitionTime() -------------------------------------------------------
-	FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
+FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
 
 Function and Usage:
 
@@ -177,11 +177,16 @@ This methold provides a way to test the impact of DST transitions on the device 
 *	This method only works if the currenty selected timezone has a pending DST transition.
 * 	To reset local time after the test, call tzLib.setLocalTime(), tzLib.changeZone(), or reboot the device.
 	
-Syntax:		tzSetNextTransitionTime((time_t)<epoch seconds UCT>);
+Syntax:	tzSetNextTransitionTime((time_t)<epoch seconds UCT>);
 
-Example: 	tzLib.setNextTransitionTime(Time.now() + (60*60)); // trigger a transition in 1 hour ...
+Examples:
+	tzLib.setNextTransitionTime(Time.now() + (60*60)); // trigger a transition in 1 hour ...
+	tzLib.setNextTransitionTime(1582165220);	// trigger a transition at a specified time.
+  Online tools can be used to convert date/time to epoch seconds.
+	http://www.onlineconversion.com/unix_time.htm
+	
 				
-Return:		int (EXIT_SUCCESS / EXIT_FAILURE)
+Return:	int (EXIT_SUCCESS / EXIT_FAILURE)
 		
 					
 ### tzLib.transitionNow() ---------------------------------------------------------------
@@ -200,7 +205,7 @@ This methold provides a way to test the impact of DST transitions on the device 
 * 	To reset local time after the test, call tzLib.setLocalTime(), tzLib.changeZone(), or reboot the device.
 *	After a real-world transition, the transition fields will remain cleared until tzLoop() triggers the next EEPROM refresh, or until the device reboots. At that time, data for the following DST transition will be loaded into EEPROM.
 		
-Syntax:		tzLib.transitionNow();
+Syntax:	tzLib.transitionNow();
 			
 Return: void
 
@@ -212,6 +217,6 @@ Function and Usage:
 *	This method erases the tzBlock from EEPROM. Erasing involves overwriting the memory space with '0xFF' characters.
 *	Erasing the tzBlock from EEPROM is useful for testing the "new device" scenario.  When there is no tzBlock in EEPROM, tzLib.setLocalTime() will configure the devices's local time using the default time zone ID.
  				
-Syntax:		tzLib.eraseTzEeprom();
+Syntax:	tzLib.eraseTzEeprom();
 		
 Return:	void
