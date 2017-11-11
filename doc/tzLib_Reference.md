@@ -1,4 +1,5 @@
 # tzLib_Reference			tzLib - The Time Zone Library
+
 ---
 ## Required Methods
 ---
@@ -61,6 +62,7 @@ Function and Usage:
 Declared: void maintainLocalTime(void);
 
 Example: tzLib.maintainLocalTime();
+
 ---
 ## Configuration Methods
 ---
