@@ -10,9 +10,10 @@ Function and Usage:
 	*	records the location of the tzBlock in EEPROM
 	*	reads the tzBlock into static memory
 					
-Syntax:	tzLib.begin()
-			
-Return: void
+Declared:	void begin(void);
+
+Example: tzLib.begin();
+
 		
 ### tzLib.setDefaultZone() --------------------------------------------------------------
  	
@@ -23,11 +24,9 @@ Function and Usage:
 *	This Wikipedia page provides a list of valid time zone IDs: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 *	Remember, time zone IDs are case and syntax sensitive.
 				
-Syntax: tzLib.setDefaultZone("<time zone id>");
-
+Declared:	void setDefaultZone(char* id); // where id is char[65]
+				
 Example: tzLib.setDefaultZone("America/New_York");
-			
-Return: void
 
 
 ### ttzLib.setLocalTime() ---------------------------------------------------------------
@@ -38,11 +37,12 @@ Function and Usage:
 *	Updates the local device's time zone settings.
 *	Must be called in the firmware's Setup() section.
 *	Is also called by tzLib.maintainLocalTime() to periodically refresh the tzBlock.
+	
+Declared:	int setLocalTime(void);
+	
+Example: tzLib.setLocalTime();
 			
-Syntax: 
-*	tzLib.setLocalTime();
-			
-Return: int (EXIT_SUCCESS / EXIT_FAILURE)
+Return: EXIT_SUCCESS / EXIT_FAILURE
 *	Return values reflect success or failure of the HTTP query and JSON parsing only.
 	*	In the FAILURE case, local time would be set based on EEPROM data that could not be validated via the HTTP query.
 	*	This method also logs a status message to static memory, for developer troubleshooting, and/or logging. This status message can be obtained using the tzLib.getHttpStatus() method;
@@ -58,10 +58,10 @@ Function and Usage:
 	*	Actual refresh/retry times are something less than the stated period to help randomize client requests.)
 *	Must be placed in the firmware's Loop() section.
 
-Syntax: 
-*	tzLib.maintainLocalTime();
-			
-Return: void
+Declared: void maintainLocalTime(void);
+
+Example: maintainLocalTime();
+
 
 ---		
 ## Configuration Methods
@@ -71,14 +71,13 @@ Return: void
 Function and Usage:
 *	Changes the device's current time zone
 *	Often used in a Particle Function to permit the device's time zone to be changed via the web.  Code sample "tzLib301.ino" demonstrates this capability.
+*	Remember, time zone IDs are case and syntax sensitive.
+
 				
-Syntax: tzLib.changeZone("<time zone id>);
+Declared: void changeZone(char* id);  // where id is char[65]
 
 Example:tzLib.changezone("America/Denver");
 
-Return: void
-		
-		
 
 ### tzLib.setEepromStartByte() ----------------------------------------------------------
 
@@ -87,14 +86,10 @@ Function and Usage:
 *	If used, this method must be invoked before tzSetup() in the firmware's Setup() section.
 *	In the case where a tzBlock exists at another EEPROM location, this command will copy it to the new location, and will overwrite the original location with '0xFF' characters.	This makes is easy for developers to move the tzBlock if/when they need to do so. 
 				
-Syntax: tzLib.setEepromStartByte(<location>);
-*	<location> type is int
-*	<location> valid range is  0 to (EEPROM.length()-128)
+Declared: void setEepromStartByte(int sb);	// where sb can be any value between 0 and (EEPROM.length()-128)
 
 Example: tzLib.setEepromStartByte(512);
 
-Return: void
-		
 
 ### tzLib.setHostName() -----------------------------------------------------------------
 
@@ -102,11 +97,9 @@ Function and Usage:
 *	Specifies the IP address or DNS name of the HTTP server that host the time zone offset and DNS transition data.
 *	Must be placed before (tzSetup() in the firmware's Setup() section. 
 				
-Syntax: 	tzSetHostName(("<server address>");
+Declared: 	void setHostName(char* host);	// where host is char[97]
 
 Example: 	tzSetHostName("208.85.39.75");
-				
-Return: void
 
 
 ### tzLib.setHostPath() -----------------------------------------------------------------
@@ -115,10 +108,9 @@ Function and Usage:
 *	Specifies the path to the time zone offset and DNS transition data on the HTTP server.
 *	Must be placed before (tzSetup() in the firmware's Setup() section. 
 	
-Syntax: 	tzSetHostPath("<path>");		(Note:  <path> MUST begin with a slash "/"
-Example: 	tzLib.setHostPath("/tzLib/getJSON.php");
+Declared: void setHostPath(char* path); 	// where path is char[97] - Note: path MUST begin with a slash "/"
 
-Return: void
+Example: tzLib.setHostPath("/tzLib/getJSON.php");
 
 		
 ###	tzLib.setHostPort() -----------------------------------------------------------------
@@ -128,12 +120,10 @@ Function and Usage:
 *	Must be placed before (tzSetup() in the firmware's setup() section.
 *	When this method is omitted, tzLib will use port 80
 	
-Syntax: 	tzLib.setHostPort(<port number>);
+Declared: 	void setHostPort(uint16_t port);
 
 Example: 	tzLib.setHostPort(8080);	
 				
-Return: void
-
 
 ---
 Query and Test Methods
@@ -143,20 +133,26 @@ Query and Test Methods
 Function and Usage:					
 *	When tzLib.setLocalTime() runs, it returns EXIT_SUCCESS, or EXIT_FAILURE, and it records a status message to static memory. This method returns that status message to help with troubleshooting and/or logging purposes.
 	
-Syntax: 	tzLib.getHttpStatus();
-Example:    `If(tzLib.setLocalTime() == EXIT_FAILURE) {`
-			`    Serial.println(getHttpStatusMsg());`
-			`}`
-			
+Declared: 	char* getHttpStatus(void);
+
+Example:    
+```cpp
+			If(tzLib.setLocalTime() == EXIT_FAILURE) {
+				Serial.println(getHttpStatusMsg());
+			}
+```			
 Return: char* to char[65];
 	
+
 ### tzLib.getZone() ---------------------------------------------------------------------
 
 Function and Usage:
 *	Allows developers to include the time zone ID in logs or notifications.
 *	Returns the current time zone ID
 		
-Syntax: 	getZone();
+Declared: 	char* getZone(void); 
+
+Example: 	Serial.println(getZone());
 		
 Return: 	char* to char[65];
 		
@@ -164,10 +160,12 @@ Return: 	char* to char[65];
 ### tzLib.getZoneAbbr() -----------------------------------------------------------------
 
 Function and Usage:
-*	Allows developers to include the time zone abbreviation in logs or notifications.
+*	Allows developers to include the current time zone abbreviation in logs or notifications.
 *	Returns the current time zone abbreviation, which often change with DST transitions.
 		
-Syntax: 	getZone();
+Declared: 	char* getZoneAbbr(void);
+
+Example:	Serial.println(getZoneAbbr());
 		
 Return: 	char* to char[6];
 		
@@ -183,15 +181,14 @@ This methold provides a way to test the impact of DST transitions on the device 
 *	This method only works if the currenty selected timezone has a pending DST transition.
 * 	To reset local time after the test, call tzLib.setLocalTime(), tzLib.changeZone(), or reboot the device.
 	
-Syntax:	tzSetNextTransitionTime((time_t)<epoch seconds UCT>);
+Declared:	int setNextTransitionTime(time_t time);	// where time is measured in epoch seconds (UTC)
 
 Examples:
-*	tzLib.setNextTransitionTime(Time.now() + (60*60)); // trigger a transition in 1 hour ...
+*	tzLib.setNextTransitionTime(Time.now() + (60*60)); // trigger a transition in 1 hour.
 *	tzLib.setNextTransitionTime(1582165220);	// trigger a transition at a specified time.
 
 Online tools, like the following, can be used to convert date/time to epoch seconds. http://www.onlineconversion.com/unix_time.htm
 	
-				
 Return:	int (EXIT_SUCCESS / EXIT_FAILURE)
 		
 					
@@ -211,9 +208,9 @@ This methold provides a way to test the impact of DST transitions on the device 
 * 	To reset local time after the test, call tzLib.setLocalTime(), tzLib.changeZone(), or reboot the device.
 *	After a real-world transition, the transition fields will remain cleared until tzLoop() triggers the next EEPROM refresh, or until the device reboots. At that time, data for the following DST transition will be loaded into EEPROM.
 		
-Syntax:	tzLib.transitionNow();
-			
-Return: void
+Declared:	void transitionNow(void);
+
+Example:	tzLib.transitionNow();
 
 
 ###	tzLib.eraseTzEeprom() ---------------------------------------------------------------
@@ -223,6 +220,7 @@ Function and Usage:
 *	This method erases the tzBlock from EEPROM. Erasing involves overwriting the memory space with '0xFF' characters.
 *	Erasing the tzBlock from EEPROM is useful for testing the "new device" scenario.  When there is no tzBlock in EEPROM, tzLib.setLocalTime() will configure the devices's local time using the default time zone ID.
  				
-Syntax:	tzLib.eraseTzEeprom();
-		
-Return:	void
+Declared:	void eraseTzEeprom(void);
+
+Example:	tzLib.eraseTzEeprom();
+
