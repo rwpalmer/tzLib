@@ -167,29 +167,34 @@ Return: 	char* to char[65];
 		
 
 ### tzLib.setNextTransitionTime() -------------------------------------------------------
-	
+FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
 Function and Usage:
-	FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
-*	Allows developers to perform DST transitions for testing. 
+This methold provides a way to test the impact of DST transitions on the device and any logs or notifications that it may generate.
+*	Allows developers to set the time when the the next DST transition will occur. 
+* 	When the transition time arrives, tzLib.maintainLocalTime() will trigger the transition as if it were the official transition time. 
 *	This method only works if the currenty selected timezone has a pending DST transition.
-*	Test DST transitions can be reversed by a device reboot or a call to Setup().
-*	In a DST transition, the following things occur:
-	*	currentOffset is changed to transitionOffset
-	*	transitionTime and transitionOffset are zeroed
-	*	Device local time settings are changed to reflect the new offset. 
-*	After a real-world transition, the transition time and offset fields will remain zero until tzLoop() triggers the next EEPROM refresh, or until the device reboots. At that time, data for the next DST transition should be loaded into EEPROM.
-		
+* 	To reset local time after the test, call tzLib.setLocalTime(), tzLib.changeZone(), or reboot the device.
+	
 Syntax:		tzSetNextTransitionTime((time_t)<epoch seconds UCT>);
 
 Example: 	to trigger a transition in 1 hour ...
 				tzLib.setNextTransitionTime(Time.now() + (60 * 60));
-Return:		void
+Return:		int (EXIT_SUCCESS / EXIT_FAILURE)
 		
 					
 ### tzLib.transitionNow() ---------------------------------------------------------------
-Function and Usage:
 FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
-	*	Shorthand for tzLib.setNextTransitontime(Time.now());
+Function and Usage:
+This methold provides a way to test the impact of DST transitions on the device and any logs or notifications that it may generate. 
+*	Allows developers to perform a pending DST transition immediately. Unlike tzLib.setNextTransitionTime(), this method performs the transition itself, so this method can be executed anywhere in firmware setup() or loop().
+*	This method only works if the currenty selected timezone has a pending DST transition.
+*	In a DST transition, the following things occur:
+	*	the current offset is updated to the transition offset.
+	*	the current abbreviation is updated to the transition abbreviation.
+	*	the transition data elements are cleared.
+	*	Device local time settings are changed to reflect the new offset
+* 	To reset local time after the test, call tzLib.setLocalTime(), tzLib.changeZone(), or reboot the device.
+*	After a real-world transition, the transition fields will remain cleared until tzLoop() triggers the next EEPROM refresh, or until the device reboots. At that time, data for the following DST transition will be loaded into EEPROM.
 		
 Syntax:		tzLib.transitionNow();
 			
@@ -200,11 +205,10 @@ Return: void
 FOR DEVELOPMENT AND TEST USE ONLY --- DO NOT USE IN PRODUCTION CODE.
 	
 Function and Usage:
-*	This method erases the tzBlock from EEPROM 
-*	The tzBlock is overwritten with '0xFF' characters.  As a result,
-	*	tzLib will forget the configured time zone.
-	*	tzLib will forget the data required to configure local time and to perform DST transitions.
-*This method is provided to help developers test the 'new device scenario.
+*	This method erases the tzBlock from EEPROM. Erasing involves overwriting the memory space with '0xFF' characters.
+*	Erasing the tzBlock from EEPROM is useful for testing the "new device" scenario.  When there is no tzBlock in EEPROM, tzLib.setLocalTime() will configure the devices's local time using the default time zone ID.
+
+
  				
 Syntax:		tzLib.eraseTzEeprom();
 		
