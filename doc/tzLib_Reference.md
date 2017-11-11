@@ -61,11 +61,10 @@ Function and Usage:
 Declared: void maintainLocalTime(void);
 
 Example: tzLib.maintainLocalTime();
-
-
----		
+---
 ## Configuration Methods
----		
+---
+
 ### tzLib.changeZone() ------------------------------------------------------------------
 
 Function and Usage:
@@ -128,6 +127,7 @@ Example: 	tzLib.setHostPort(8080);
 ---
 Query and Test Methods
 ---
+
 	
 ### tzLib.getHttpStatus()) --------------------------------------------------------------
 
