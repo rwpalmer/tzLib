@@ -21,7 +21,7 @@ tzLib does not sense the device's time zone, but ...
 * Time zone data is stored in EEPROM to assue that the data is available whenever the system reboots, even if no network connection is available at that time. 
 
 ## Sample Usage
-### Most implementations only require the addition of four lines of code, but this sample includes a fifth for clarity.
+#### Most implementations only require the addition of four lines of code, but this sample includes a fifth for clarity.
 
 ```cpp		
 		setup() {
