@@ -24,14 +24,14 @@ tzLib does not sense the device's time zone, but ...
 	   }
 		   
 	   Loop() {
-	      tzLib.maintainLocaltime();          // <- 4. perform DST transitions & keeps time zone data current.
+	      tzLib.maintainLocaltime();          // <- 4. performs DST transitions & keeps time zone data current.
 	   }
 ```
 
 *__I M P O R T A N T__*  
 Some implementations will require a fifth line of code. tzLib stores data in the devices EEPROM. By default EEPROM bytes 0-127 are used. 
-* 	The command "tzLib.setEepromStartByte(0);" reflects that default.  
-* 	If the default location is not available, developers must modify and insert this command somewhere between #1 and #3 in the code sample.
+* 	The command "tzLib.setEepromStartByte(0);" reflects the default setting.  
+* 	If the default location is not available, the above command must modified and inserted into the code sample somewhere between #1 and #3. 
 *	For example, "tzLib.setEepromStartByte(512);" would tell tzLib to use EEPROM bytes 512-639. 
 *	Please see the tzLib-QuickStart guide on GitHub for more details. https://github.com/rwpalmer/tzLib/blob/master/doc/tzLib-QuickStart.md
 
