@@ -8,7 +8,7 @@ tzLib does not sense the device's time zone, but ...
 *	Particle makes it possible for devices to accept input from the web.
 *	tzLib can accept time zone changes from the web, and can perform the changes in real time. 
 *	tzLib can also accept time zone changes from geopositioning software, but that has yet to be demonstrated.
-*	In the mean time, developers can provide device users with a list-based or map-based time-zone selection tool. A number of choices are available on GitHub, and elsewhere on the Internet. The only requirement is that the tool must generate time zone IDs that can be found in IANA's time zone database.
+*	Developers can provide device users with a list-based or map-based time-zone selection tool. A number of choices are available on GitHub, and elsewhere on the Internet. The only requirement is that the tool must generate time zone IDs that can be found in IANA's time zone database.
 *	Oh, and yes, tzLib does automatically perform DST transitions.  
 
 
