@@ -12,7 +12,7 @@ tzLib does not sense the device's time zone, but ...
 *	Oh, and yes, tzLib does automatically perform DST transitions.  
 
 
-####Most implementations only require the addition of four lines of code:
+#### Most implementations only require the addition of four lines of code:
 
 ```cpp		
 	   Setup() {
