@@ -3,12 +3,10 @@
 ## Automatically maintains the device's local time settings.
 
 ### So, what does "Automatically" mean?
-tzLib does not sense the device's time zone, but ...
-*	tzLib will configure local time based on a firmware defined "default time zone ID", or "Olson Name".
-*	Particle makes it possible for devices to accept input from the web.
-*	tzLib can accept time zone changes from the web, and can perform the changes in real time. 
-*	tzLib can also accept time zone changes from geopositioning software, but that has yet to be demonstrated.
-*	Developers can provide device users with a list-based or map-based time-zone selection tool. A number of choices are available on GitHub, and elsewhere on the Internet. The only requirement is that the tool must generate time zone IDs that can be found in IANA's time zone database.
+tzLib does not automatically set a device's local time based upon the device's physical location ... but it does make it possible for developers and users to change the device's time zone in real time based on web-based triggers or geopositioning software.
+*	On first boot, tzLib will configure local time based on a firmware defined "default time zone ID", or "Olson Name".
+*	Once running, a Particle function can be used to accept input from the web, and that function can call tzLib to change the device's time zone. This capability is demonstrated in one of tzLib's firmware examples. 
+*	This functionality also means that developers can provide device users with a list-based or map-based time-zone selection tool to change the device's time zone. A number of such tools are available on GitHub, and elsewhere on the Internet. The only requirement is that the tool must generate time zone IDs that can be found in IANA's time zone database.
 *	Oh, and yes, tzLib does automatically perform DST transitions.  
 
 
@@ -21,21 +19,21 @@ tzLib does not sense the device's time zone, but ...
 * Time zone data is stored in EEPROM to assue that the data is available whenever the system reboots, even if no network connection is available at that time. 
 
 ## Sample Usage
-#### Most implementations require the addition of four lines of code, but this sample includes a fifth for clarity.
+#### Most implementations require the addition of four lines of code. This sample includes a fifth to make it clear when the fifth line must be included.
 
 ```cpp		
 	setup() {
 	    tzLib.begin();                          // <- 1. Prepare tzLib to run
 
-	    tzLib.setEepromStartByte(0);            // <- 2. Set EEPROM location for tzLib to use		  
+	    tzLib.setEepromStartByte(0);            // <- 2. Tell tzLib where to store data in EEPROM		  
 		  
-	    tzLib.setDefaultZone("<timezone id>");  // <- 3. Set default timezone
+	    tzLib.setDefaultZone("<timezone id>");  // <- 3. Set the default time zone
 
-	    tzLib.setLocalTime();                   // <- 4. configure local time   
+	    tzLib.setLocalTime();                   // <- 4. Configure local time   
 	}
 		   
 	loop() {
-	    tzLib.maintainLocaltime();       // <- 5. performs DST transitions & keeps time zone data current.
+	    tzLib.maintainLocaltime();       // <- 5. Perform DST transitions & keep time zone data current.
 	}
 ```
 

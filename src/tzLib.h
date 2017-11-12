@@ -47,25 +47,26 @@ class TzLib {
         bool tzEepromExists;                        // <-- Indicates if the tzBlock currently exists in EEPROM
         int eepromStartByte;                        // <-- The starting location of the tzBlock in EEPROM
         time_t eepromRefreshTime;                   // <-- Specifies when the next tzBlock refresh will take place
-        char hostName[129];                         // <-- DNS name or IP address of the HTTP Server
-        char hostPath[129];                         // <-- Location of the getJSON.php file on the HTTP Server (Start with '/')
+        char hostName[97];                         // <-- DNS name or IP address of the HTTP Server
+        char hostPath[97];                         // <-- Location of the getJSON.php file on the HTTP Server (Start with '/')
         uint16_t hostPort;                          // <-- Host port number to use for HTTP (default 80)
         char defaultZone[65];                       // <-- The default time zone  (originally set to UTC, but may be overridden by tzLib.setDefaultZone()
         char statusMsg[65];                         // <-- Records processing status messages
-    public:
+        int setLocalTime(char* id);             	// <-- Sets the devices local time settings for a specified time zone
+	public:
         void begin(void);                           // <-- TzLib constructor renamed so users have placement options
-        int setLocalTime(char* = NULL);             // <-- Sets the devices local time settings
+        int setLocalTime(void);             		// <-- Sets the devices local time settings
         void maintainLocalTime(void);               // <-- Maintains the devices local time settings
         void setDefaultZone(char* id);              // <-- Sets the default time zone ID
         char* getZone(void);                        // <-- Gets the current time zone ID
         char* getZoneAbbr(void);                    // <-- Gets the current time zone Abbreviation
         void changeZone(char* id);                  // <-- Changes the current time zone ID and device settings
         void setEepromStartByte(int sb);            // <-- Sets the location of the tzBlock in EEPROM
-        void setHostName(char*);                    // <-- Sets the HTTP server's host name or IP address
-        void setHostPath(char*);                    // <-- Sets the HTTP server's path to the getJSON.php
+        void setHostName(char* host);                    // <-- Sets the HTTP server's host name or IP address
+        void setHostPath(char* path);                    // <-- Sets the HTTP server's path to the getJSON.php
         void setHostPort(uint16_t port);            // <-- Sets the HTTP server's port number (default 80)
         int setNextTransitionTime(time_t time);     // <-- Allows testers to schedule test DST transitions
-        void transitionNow(void);                   // <-- For testing: Performs a a pending transition instantly 
+        void transitionNow(void);                    // <-- For testing: Performs a a pending transition instantly 
 		void eraseTzEeprom(void);                   // <-- Overwrites a TzBlock in EEPROM with '0xFF'
 		char* getHttpStatus(void);                  // <-- Gets the HTTP Status Message
 
@@ -90,12 +91,12 @@ class Json {
         int get(time_t& n, char* json, char* name);             // <-- Gets a time_t value for the associated JSON name
         int get(char* ca, int caSize, char* json, char* name);  // <-- Gets a character array for the associated JSON name
 
-        friend int TzLib::setLocalTime(char*);
+        friend class TzLib;
         friend int TzBlock::applyJson(char*);
 };
 
 // Json is instantiated in:
-//  tzLib.cpp --- TzLib::setLocalTime(), where JSON is encoded
+//  tzLib.cpp --- TzLib::setLocalTime(char*), where JSON is encoded
 //  tzBlock.cpp --- TzBlock::applyJson(), where JSON is decoded
 
 
@@ -115,7 +116,7 @@ class Http {
         Http();
         int getJson(char* hostName, int hostPort, char* hostPath, char* jsonStr, int jsonSize, char* errorMsg, int errMsgSize);  // <-- Performs the HTTP processing
         
-        friend int TzLib::setLocalTime(char*);
+        friend class TzLib;
 };
 
 // Http is instantiated in tzLib.cpp --- TzLib::setLocalTime()

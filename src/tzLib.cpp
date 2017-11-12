@@ -33,86 +33,15 @@ void TzLib::begin(void) {
 }
 
 // ---------------------------------------------------------------------------- setLocalTime()
-int TzLib::setLocalTime(char* tzID) {
-   // Prepare to query server for timezone information ... 
-    // First, we choose the timezone to query ...
-    TzBlock tzWeb;                                                      //      -- ORDER OF PRECIDENCE
-    if (tzID != NULL) {
-        strncpy(tzWeb.id, tzID, sizeof(tzWeb.id));                       //      1. Use the tzID arguement
-    } else {
-        if (tzEepromExists && (strlen(tzEeprom.id) > 0)) {
-            strcpy(tzWeb.id, tzEeprom.id);                              //      2. Use the ID stored in EEPROM
-        } else {
-            strcpy(tzWeb.id, defaultZone);                              //      3. Use the default timezone ID
-        }
-    }
-        #ifdef LOGGING
-            Serial.println("\n\r-------------------------------------------------- TzLib::setLocalTime()");
-            Serial.print("tzLib>\teepromStartByte =  ");
-            Serial.println(eepromStartByte);
-            Serial.println(tzEepromExists? "tzLib>\tzEepromExists = true":"tzLib>\tzEepromExists = false");
+// Select the device's time zone configure local time settings
+int TzLib::setLocalTime(void) {
+	if (tzEepromExists && (strlen(tzEeprom.id) > 0)) { 	// if a time zone ID is stored in EEPROM, we use it ...
+		return(setLocalTime(tzEeprom.id));
+	} else {											// otherwise, we use the default time zone ID
+		return(setLocalTime(defaultZone));
+	}
+}	
 
-            if (tzID == NULL) {
-                Serial.println("tzLib>\ttzID Arguement is NULL");
-            } else {
-                Serial.print("tzLib>\ttzID Arguement = '");
-                Serial.print(tzID);
-                Serial.println("'");
-            }
-            Serial.print("tzLib>\tdefaultZone = ");
-            Serial.println(defaultZone);
-            Serial.print("tzLib>\ttzEeprom.id = ");
-            Serial.println(tzEeprom.id);
-            Serial.print("tzLib>\tFor Query: tzWeb.id = ");
-            Serial.println(tzWeb.id);
-        #endif
-            
-    // Query the HTTP Server
-    Http http;
-    Json json;
-    char jsonStr[129];
-    int exitStatus = EXIT_FAILURE;
-    json.encodeQuery(jsonStr, tzWeb.id);
-    statusMsg[0] = '\0';
-    int statusCode = http.getJson(hostName, hostPort, hostPath, jsonStr, sizeof(jsonStr), statusMsg, sizeof(statusMsg));
-    // note: jsonStr provides http.post() with the query string, and
-    //       http.post() overwrites that with the JSON returned from
-    //       the HTTP server.
-    if (statusCode == 200) {
-        // Update the 'tzWeb' TzBlock with the JSON returned from the HTTP server
-        if (tzWeb.applyJson(jsonStr) == EXIT_SUCCESS) {
-
-        		#ifdef LOGGING
-        		    tzWeb.log("tzWeb");
-        		#endif
-				
-            //if the 'tzWeb' TzBlock has new data, update EEPROM
-            if ( !tzEeprom.equals(tzWeb)) {
-				if (eepromStartByte == -1) { // <-- Occurs if no TzBlock was found in EEPROM, AND no startByte has been designated.
-					eepromStartByte = 0;
-				}
-                EEPROM.put(eepromStartByte,tzWeb);
-                tzEepromExists = true;
-                EEPROM.get(eepromStartByte,tzEeprom);
-            } else {  
-                #ifdef LOGGING
-                    Serial.println("tzLib>\tSkipping TzBlock update");
-                #endif
-            }
-        }
-        exitStatus = EXIT_SUCCESS;
-    }
-    // update the devices local time settings based on EEPROM alone
-    updateDeviceSettings();
-    int refresh_multiplier = 1;
-    
-    // If the tz has no DST scheduled transitions, we will trebble the refresh Interval
-    if ((tzWeb.tranTime == 0) && (tzWeb.stdOffset == tzWeb.curOffset)) {
-        refresh_multiplier = 3;
-    }
-    eepromRefreshTime = Time.now() + (tzBlockRefreshInterval * refresh_multiplier);
-    return exitStatus;
-}
 
 // ---------------------------------------------------------------------------- maintainLocalTime()
 void TzLib::maintainLocalTime() {
@@ -279,6 +208,72 @@ char* TzLib::getHttpStatus(void) {
 // ______________________________________________________________________________________________
 
 //                    P R I V A T E    M E T H O D S    B E L O W
+
+
+// ---------------------------------------------------------------------------- setLocalTime(char* id)
+int TzLib::setLocalTime(char* tzID) {
+   // Prepare to query server for timezone information ... 
+    TzBlock tzWeb;
+    strncpy(tzWeb.id, tzID, sizeof(tzWeb.id));
+        #ifdef LOGGING
+            Serial.println("\n\r-------------------------------------------------- TzLib::setLocalTime()");
+            Serial.print("tzLib>\teepromStartByte =  ");
+            Serial.println(eepromStartByte);
+            Serial.println(tzEepromExists? "tzLib>\tzEepromExists = true":"tzLib>\tzEepromExists = false");
+            Serial.print("tzLib>\tdefaultZone = ");
+            Serial.println(defaultZone);
+            Serial.print("tzLib>\ttzEeprom.id = ");
+            Serial.println(tzEeprom.id);
+            Serial.print("tzLib>\tReady to Query: tzWeb = ");
+            Serial.println(tzWeb.id);
+        #endif
+            
+    // Query the HTTP Server
+    Http http;
+    Json json;
+    char jsonStr[129];
+    int exitStatus = EXIT_FAILURE;
+    json.encodeQuery(jsonStr, tzWeb.id);
+    statusMsg[0] = '\0';
+    int statusCode = http.getJson(hostName, hostPort, hostPath, jsonStr, sizeof(jsonStr), statusMsg, sizeof(statusMsg));
+    // note: jsonStr provides http.post() with the query string, and
+    //       http.post() overwrites that with the JSON returned from
+    //       the HTTP server.
+    if (statusCode == 200) {
+        // Update the 'tzWeb' TzBlock with the JSON returned from the HTTP server
+        if (tzWeb.applyJson(jsonStr) == EXIT_SUCCESS) {
+
+        		#ifdef LOGGING
+        		    tzWeb.log("tzWeb");
+        		#endif
+				
+            //if the 'tzWeb' TzBlock has new data, update EEPROM
+            if ( !tzEeprom.equals(tzWeb)) {
+				if (eepromStartByte == -1) { // <-- Occurs if no TzBlock was found in EEPROM, AND no startByte has been designated.
+					eepromStartByte = 0;
+				}
+                EEPROM.put(eepromStartByte,tzWeb);
+                tzEepromExists = true;
+                EEPROM.get(eepromStartByte,tzEeprom);
+            } else {  
+                #ifdef LOGGING
+                    Serial.println("tzLib>\tSkipping TzBlock update");
+                #endif
+            }
+        }
+        exitStatus = EXIT_SUCCESS;
+    }
+    // update the devices local time settings based on EEPROM alone
+    updateDeviceSettings();
+    int refresh_multiplier = 1;
+    
+    // If the tz has no DST scheduled transitions, we will trebble the refresh Interval
+    if ((tzWeb.tranTime == 0) && (tzWeb.stdOffset == tzWeb.curOffset)) {
+        refresh_multiplier = 3;
+    }
+    eepromRefreshTime = Time.now() + (tzBlockRefreshInterval * refresh_multiplier);
+    return exitStatus;
+}
 
 // ---------------------------------------------------------------------------- searchForTzBlock()
 // Locates the TzBlock stored in EEPROM. 
