@@ -36,7 +36,7 @@ Some implementations will require a fifth line of code. tzLib stores data in the
 *	Please see the tzLib-QuickStart guide on GitHub for more details. https://github.com/rwpalmer/tzLib/blob/master/doc/tzLib-QuickStart.md
 
 ##	Library Documentation
-	tzLib documentation includes an Overview, a QuickStart Guide, a Reference Guide, and a manual that explains how the author created the HTTP server he used for testing tzLib. https://github.com/rwpalmer/tzLib/tree/master/doc
+tzLib documentation includes an Overview, a QuickStart Guide, a Reference Guide, and a manual that explains how the author created the HTTP server he used for testing tzLib. https://github.com/rwpalmer/tzLib/tree/master/doc
 
 ##	Firmware Examples
 tzLib is packaged with three firmware examples. All three are designed to be run with a serial console.
