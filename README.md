@@ -29,13 +29,13 @@ tzLib does not sense the device's time zone, but ...
 
 	    tzLib.setEepromStartByte(0);            // <- 2. Set EEPROM location for tzLib to use		  
 		  
-	    tzLib.setDefaultZone("<timezone id>"); 	// <- 3. Set default timezone
+	    tzLib.setDefaultZone("<timezone id>");  // <- 3. Set default timezone
 
-	    tzLib.setLocalTime();                  	// <- 4. configure local time   
+	    tzLib.setLocalTime();                   // <- 4. configure local time   
 	}
 		   
 	loop() {
-	    tzLib.maintainLocaltime();          // <- 5. performs DST transitions & keeps time zone data current.
+	    tzLib.maintainLocaltime();       // <- 5. performs DST transitions & keeps time zone data current.
 	}
 ```
 
