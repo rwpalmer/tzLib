@@ -2,9 +2,9 @@
 
 ## Automatically maintains the device's local time settings.
 
-#### So, what does "Automatically" mean?
+### So, what does "Automatically" mean?
 tzLib does not sense the device's time zone, but ...
-*	tzLib will configure local time based on a firmware defined "time zone ID", or "Olson Name".
+*	tzLib will configure local time based on a firmware defined "default time zone ID", or "Olson Name".
 *	Particle makes it possible to Accept time zone changes from the web.
 *	tzLib performs time zone changes in real-time, and remembers the current timezone when the device reboots.
 *	tzLib should be able to accept time zone changes from geopositioning software as well, but that has yet to be proven.
@@ -30,10 +30,13 @@ Most implementations only require the addition of these four lines of code:
 	   }
 ```
 
-*__WARNING__*  
-tzLib stores 128 bytes of time zone data in the devices EEPROM. This 128 byte data block is called the tzBlock.
-* 	By default the tzBlock is stored in EEPROM bytes 0 - 127.
-* 	If the default location is used for other purposes, developers must use the tzLib.setEepromStartByte() method to select another location to avoid conflict. ( eg: tzLib.setEepromStartByte(512); )
+*__I M P O R T A N T__*  
+tzLib will store data in the devices EEPROM. By default EEPROM bytes 0-127 are used. 
+* 	The command "tzLib.setEepromStartByte(0);" reflects that default.  
+* 	If the default location is not available, developers must modify this command and insert it between #1 and #2 in the code sample.
+*	For example, "tzLib.setEepromStartByte(512);" would tell tzLib to use EEPROM bytes 512-639. 
+*	Please see the tzLib-QuickStart guide in the doc folder of the projects GitHub repository for more details.
+
 
 
 
