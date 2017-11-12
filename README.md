@@ -33,7 +33,7 @@ Most implementations only require the addition of these four lines of code:
 *__I M P O R T A N T__*  
 tzLib will store data in the devices EEPROM. By default EEPROM bytes 0-127 are used. 
 * 	The command "tzLib.setEepromStartByte(0);" reflects that default.  
-* 	If the default location is not available, developers must modify this command and insert it between #1 and #2 in the code sample.
+* 	If the default location is not available, developers must modify this command and insert it somewhere between #1 and #3 in the code sample.
 *	For example, "tzLib.setEepromStartByte(512);" would tell tzLib to use EEPROM bytes 512-639. 
 *	Please see the tzLib-QuickStart guide in the doc folder of the projects GitHub repository for more details.
 
@@ -44,7 +44,7 @@ tzLib will store data in the devices EEPROM. By default EEPROM bytes 0-127 are u
 
 * IANA maintains the time zone database that communication companies and OS vendors use to manage local time world wide. 
 
-* Using an IANA defined time zone ID as a key, tzLIb issues a PHP query to an HTTP server to obtain the time zone data it needs to configure local time and to perform DST transitions at the proper time. 
+* Using an IANA defined time zone ID as a key, tzLIb issues a PHP query to an HTTP server to obtain the time zone data it needs to configure local time and to perform DST transitions at their scheduled time.
 
 * Time zone data is stored in EEPROM to assue that the data is available whenever the system reboots, even if no network connection is available at that time. 
 
@@ -53,7 +53,7 @@ tzLib will store data in the devices EEPROM. By default EEPROM bytes 0-127 are u
 ## CURRENT STATE OF THE PROJECT
 
 tzLib (0.1.1) will exit alpha testing soon.
-*	Known defects: none as of 9 Nov 2017
+*	Known defects: none as of 11 Nov 2017
 	
 Code and documentation are under review. 
 	
