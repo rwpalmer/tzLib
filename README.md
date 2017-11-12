@@ -12,9 +12,7 @@ tzLib does not sense the device's time zone, but ...
 *	Oh, and yes, tzLib does automatically perform DST transitions.  
 
 
-
-
-Most implementations only require the addition of these four lines of code:
+####Most implementations only require the addition of four lines of code:
 
 ```cpp		
 	   Setup() {
@@ -31,16 +29,24 @@ Most implementations only require the addition of these four lines of code:
 ```
 
 *__I M P O R T A N T__*  
-tzLib will store data in the devices EEPROM. By default EEPROM bytes 0-127 are used. 
+Some implementations will require a fifth line of code. tzLib stores data in the devices EEPROM. By default EEPROM bytes 0-127 are used. 
 * 	The command "tzLib.setEepromStartByte(0);" reflects that default.  
-* 	If the default location is not available, developers must modify this command and insert it somewhere between #1 and #3 in the code sample.
+* 	If the default location is not available, developers must modify and insert this command somewhere between #1 and #3 in the code sample.
 *	For example, "tzLib.setEepromStartByte(512);" would tell tzLib to use EEPROM bytes 512-639. 
-*	Please see the tzLib-QuickStart guide in the doc folder of the projects GitHub repository for more details.
+*	Please see the tzLib-QuickStart guide on GitHub for more details. https://github.com/rwpalmer/tzLib/blob/master/doc/tzLib-QuickStart.md
 
+##	Library Documentation
+	tzLib documentation includes an Overview, a QuickStart Guide, a Reference Guide, and a manual that explains how the author created the HTTP server he used for testing tzLib. https://github.com/rwpalmer/tzLib/tree/master/doc
 
+##	Firmware Examples
+tzLib is packaged with three firmware examples. All three are designed to be run with a serial console.
+*	*tzLib101.ino* demonstrates setting local time and displaying local time variables exposed by tzLib and the Particle Time class.
+*	*tzLib201.ino* extends txLib101 by performing a test DST transition and reprinting the local time variables.
+*	*tzLib301.ino* extends tzLib101 in a different direction ... demonstrating how the device's time zone can be changed via the web.
 
+Sample "serial console output" is included in the comments at the the bottom of each example's .ino file. tzLib301.ino comments includes HTML that can be used to trigger a time zone change on the device. https://github.com/rwpalmer/tzLib/tree/master/examples
 
-## HOW THE LIBRARY WORKS 
+## How the Library Works ...
 
 * IANA maintains the time zone database that communication companies and OS vendors use to manage local time world wide. 
 
@@ -48,9 +54,7 @@ tzLib will store data in the devices EEPROM. By default EEPROM bytes 0-127 are u
 
 * Time zone data is stored in EEPROM to assue that the data is available whenever the system reboots, even if no network connection is available at that time. 
 
-
-
-## CURRENT STATE OF THE PROJECT
+## Current State of the Project ...
 
 tzLib (0.1.1) will exit alpha testing soon.
 *	Known defects: none as of 11 Nov 2017
