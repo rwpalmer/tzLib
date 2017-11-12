@@ -21,22 +21,22 @@ tzLib does not sense the device's time zone, but ...
 * Time zone data is stored in EEPROM to assue that the data is available whenever the system reboots, even if no network connection is available at that time. 
 
 ## Sample Usage
-#### Most implementations only require the addition of four lines of code, but this sample includes a fifth for clarity.
+#### Most implementations require the addition of four lines of code, but this sample includes a fifth for clarity.
 
 ```cpp		
-		setup() {
-			tzLib.begin();                          // <- 1. Prepare tzLib to run
+	    setup() {
+	        tzLib.begin();                          // <- 1. Prepare tzLib to run
 
-			tzLib.setEepromStartByte(0);            // <- 2. Set EEPROM location for tzLib to use		  
+	        tzLib.setEepromStartByte(0);            // <- 2. Set EEPROM location for tzLib to use		  
 		  
-			tzLib.setDefaultZone("<timezone id>"); 	// <- 3. Set default timezone
+	        tzLib.setDefaultZone("<timezone id>"); 	// <- 3. Set default timezone
 
-	      tzLib.setLocalTime();                  	// <- 4. configure local time   
-	   }
+	        tzLib.setLocalTime();                  	// <- 4. configure local time   
+	    }
 		   
-	   loop() {
+	    loop() {
 	      tzLib.maintainLocaltime();          // <- 5. performs DST transitions & keeps time zone data current.
-	   }
+	    }
 ```
 
 *__I M P O R T A N T__*  
