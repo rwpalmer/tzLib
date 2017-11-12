@@ -5,10 +5,10 @@
 ### So, what does "Automatically" mean?
 tzLib does not sense the device's time zone, but ...
 *	tzLib will configure local time based on a firmware defined "default time zone ID", or "Olson Name".
-*	Particle makes it possible to Accept time zone changes from the web.
-*	tzLib performs time zone changes in real-time.
-*	tzLib should be able to accept time zone changes from geopositioning software as well, but that has yet to be proven.
-*	In the mean time, we can provide device users with a list-based or map-based time-zone selection tool. A number of choices are available on GitHub, and elsewhere on the Internet. The only requirement is that they generate a time zone ID that can be found in IANA's time zone database.
+*	Particle makes it possible for devices to accept input from the web.
+*	tzLib can accept time zone changes from the web, and can perform the changes in real time. 
+*	tzLib can also accept time zone changes from geopositioning software, but that has yet to be demonstrated.
+*	In the mean time, developers can provide device users with a list-based or map-based time-zone selection tool. A number of choices are available on GitHub, and elsewhere on the Internet. The only requirement is that the tool must generate time zone IDs that can be found in IANA's time zone database.
 *	Oh, and yes, tzLib does automatically perform DST transitions.  
 
 
