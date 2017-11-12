@@ -1,14 +1,18 @@
 # tzLib
 
+## Automatically maintains the device's local time settings.
 
-* Configures the device's local time settings based upon:
-	*	a specified time zone ID.
-	*	time zone details obtained from an HTTP server.
-* Performs Daylight Savings Time transitions when they are scheduled.
-* Designed for IOT devices.
-* Supports user initiated time zone selection via the web.
-* Should support time zone changes triggered by geopositioning software. (not yet proven)
-* Easy to implement ...
+#### So, what does "Automatically" mean?
+tzLib does not sense the device's time zone, but ...
+*	tzLib will configure local time based on a firmware defined "time zone ID", or "Olson Name".
+*	Particle makes it possible to Accept time zone changes from the web.
+*	tzLib performs time zone changes in real-time, and remembers the current timezone when the device reboots.
+*	tzLib should be able to accept time zone changes from geopositioning software as well, but that has yet to be proven.
+*	In the mean time, we can provide device users with a list-based or map-based time-zone selection tool. A number of choices are available on GitHub, and elsewhere on the Internet. The only requirement is that they generate a time zone ID that can be found in IANA's time zone database.
+*	Oh, and yes, tzLib does automatically perform DST transitions.  
+
+
+
 
 Most implementations only require the addition of these four lines of code:
 
@@ -48,7 +52,7 @@ tzLib stores 128 bytes of time zone data in the devices EEPROM. This 128 byte da
 tzLib (0.1.1) will exit alpha testing soon.
 *	Known defects: none as of 9 Nov 2017
 	
-Documentation is still being written.
+Code and documentation are under review. 
 	
 To support beta testing, an HTTP server has been connected to the  web, and the library has been preconfigured to use this server by default. 
 		
