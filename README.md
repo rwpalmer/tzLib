@@ -82,7 +82,7 @@ Hosting requirements are minimal:
 Please report any issues, suggestions, and comments to the author and maintainer: rwpalmeribm@gmail.com
 	   
 
-Many thanks to Kasper Kamperman for suggesting the move from Java to PHP,
+Many thanks to Kasper Kamperman (https://www.kasperkamperman.com) for suggesting the move from Java to PHP,
 and for helping to assemble the PHP code used in this project.
 
 
