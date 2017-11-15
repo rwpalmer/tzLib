@@ -12,14 +12,36 @@
 		2. 	Some HTML, with instrutions, that you can use to use to change your device's time zone
 			via your computer. 
 	
+	The Particle Console can also be used to change the devices time zone using this example ...
+	    1.  Open the console within the web IDE.
+	    2.  Locate the "SetTimeZone" function in the "FUNCTIONS" box (right side of the screen)
+	    3.  Enter a valid time zone ID into the "Arguements" box and click "CALL".
+	        (for example, enter:  "Canada/Newfoundland" ... without the quotes.)
+	    4.  Click "GET" next to the Particle variables to see how the change impacted the device's
+	        settings. (No variables will change if an invalid time zone ID is entered.)
+	
 */
+// Particle variables
+char tz[65] = "";
+char tzAbbr[6] = "";
+double tzOffset = 0;
+double dstOffset = 0;
+char dst[6] = "";
 
 // ----------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------- setup()
 void setup() {
 	
-	// Register the Particle Function that will allow time zone changes via the web --------------- < NOTE THIS
-    Particle.function("webChangeTz", webChangeTz);    
+	// Register the Particle Function that will allow time zone changes via the web ---------------
+    Particle.function("SetTimeZone", webChangeTz);
+    
+    // Register the Particle Variables that make time zone settings visible on the Particle Console
+    Particle.variable("DeviceTZ", tz);
+    Particle.variable("TZ_Abbr", tzAbbr);
+    Particle.variable("TZ_Offset", tzOffset);
+    Particle.variable("DST_Offset", dstOffset);
+    Particle.variable("isDST", dst);
+       
    
     // Enable communication with the serial console, and give the user 10 seconds to connect.
     Serial.begin(9600);
@@ -34,7 +56,12 @@ void setup() {
     // Use tzLib to set the devices local time
     tzLib.begin(); 
     tzLib.setDefaultZone("America/New_York");   
-    tzLib.setLocalTime();  
+    tzLib.setLocalTime();
+    strncpy(tz, tzLib.getZone(), sizeof(tz));
+    strncpy(tzAbbr, tzLib.getZoneAbbr(), sizeof(tzAbbr));
+    tzOffset = Time.zone();
+    dstOffset = Time.getDSTOffset();
+    strncpy(dst,Time.isDST()? "true":"false", sizeof(dst));
 
     // Display local time settings
     Serial.println("\n\n\ttzLib301 -------------------------------------------------------------------------");
@@ -73,7 +100,14 @@ int webChangeTz(String id) {
     id.toCharArray(zoneId, sizeof(zoneId));
     tzLib.changeZone(zoneId);
     
-    // Display data for new time zone
+    // Update Particle Variables
+    strncpy(tz, tzLib.getZone(), sizeof(tz));
+    strncpy(tzAbbr, tzLib.getZoneAbbr(), sizeof(tzAbbr));
+    tzOffset = Time.zone();
+    dstOffset = Time.getDSTOffset();
+    strncpy(dst,Time.isDST()? "true":"false", sizeof(dst));
+   
+    // Display data for new time zone to Serial Console
 	Serial.println("\n\n\tReceived Time Zone Change  -------------------------------------------------------");
 	Serial.print("\n\ttzLib.getHTTPStatus() returns:\t\t");
 	Serial.println(tzLib.getHttpStatus());
@@ -151,6 +185,7 @@ int webChangeTz(String id) {
     Please select a timezone ... <br>
     <input type="radio" name="args" value="America/Chicago">Chicago<br>
     <input type="radio" name="args" value="America/Denver">Denver<br>
+	<input type="radio" name="args" value="Canada/Newfoundland">Newfoundland<br>
     <input type="radio" name="args" value="Pacific/Honolulu">Hololulu<br><br>
     <input type="submit" value="Change Timezone">
   </form>

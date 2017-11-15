@@ -52,7 +52,7 @@ tzLib documentation includes an Overview, a QuickStart Guide, a Reference Guide,
 tzLib is packaged with three firmware examples. All three are designed to be run with a serial console.
 *	*tzLib101.ino* demonstrates setting local time and displaying local time variables exposed by tzLib and the Particle Time class.
 *	*tzLib201.ino* extends txLib101 by performing a test DST transition and reprinting the local time variables.
-*	*tzLib301.ino* extends tzLib101 in a different direction ... demonstrating how the device's time zone can be changed via the web.
+*	*tzLib301.ino* extends tzLib101 in a different direction ... demonstrating how the device's time zone can be changed via the Particle Console and via the web.  
 
 Sample "serial console output" is included in the comments at the the bottom of each example's .ino file. tzLib301.ino comments includes HTML that can be used to trigger a time zone change on the device. https://github.com/rwpalmer/tzLib/tree/master/examples
 
