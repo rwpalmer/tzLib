@@ -183,10 +183,16 @@ int webChangeTz(String id) {
   <body>
   <form action="https://api.particle.io/v1/devices/<_YOUR_DEVICE_ID_>/webChangeTz?access_token=<_YOUR_ACCESS_TOKEN_>" method="POST">
     Please select a timezone ... <br>
+    <input type="radio" name="args" value="Europe/Amsterdam">Amsterdam<br>
+    <input type="radio" name="args" value="Pacific/Chatham">Chatham<br>
     <input type="radio" name="args" value="America/Chicago">Chicago<br>
     <input type="radio" name="args" value="America/Denver">Denver<br>
+    <input type="radio" name="args" value="Pacific/Honolulu">Hololulu<br>
+    <input type="radio" name="args" value="Africa/Johannesburg">Johannesburg<br>
+    <input type="radio" name="args" value="Pacific/Marquesas">Marquesas<br>
 	<input type="radio" name="args" value="Canada/Newfoundland">Newfoundland<br>
-    <input type="radio" name="args" value="Pacific/Honolulu">Hololulu<br><br>
+    <input type="radio" name="args" value="Australia/Tasmania">Tasmania<br>
+    <input type="radio" name="args" value="Asia/Tel_Aviv">Tel Aviv<br>
     <input type="submit" value="Change Timezone">
   </form>
   </body>
