@@ -75,7 +75,7 @@ For those who wish to create their server, or to use an alternate server.
 The search for someone to host the production HTTP server is underway.  We hope to find a corporate entity who can host the PHP file in their data-center, so library users will have a platform that they can rely upon. Please contact the author if you can help, or if you have any contacts who might be able to help in this effort. 
 		
 Hosting requirements are minimal: 
-	* 	Host a small PHP file (332 bytes) on an HTTP server.
+	* 	Host a small (3KB) PHP file on an HTTP server.
 	* 	Keep the server's time zone database current.
 	* 	Provide production level availability.
 		
