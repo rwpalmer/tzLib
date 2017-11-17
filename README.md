@@ -45,7 +45,7 @@ tzLib does not automatically set a device's local time based upon the device's p
 
 
 ##	Library Documentation
-tzLib documentation includes an Overview, a QuickStart Guide, a Reference Guide, and a manual that explains how the author created the HTTP server he used for testing tzLib. https://github.com/rwpalmer/tzLib/tree/master/doc
+tzLib documentation includes an Overview, a QuickStart Guide, a Reference Guide, and a manual that explains how the author created the HTTP server he used for testing tzLib. https://github.com/rwpalmer/tzLib/tree/master/doc{:style="float: right;margin-right: 7px;margin-top: 7px;"}
 
 
 ##	Firmware Examples
