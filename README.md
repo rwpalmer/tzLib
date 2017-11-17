@@ -45,14 +45,14 @@ tzLib does not automatically set a device's local time based upon the device's p
 
 
 ##	Library Documentation
-tzLib documentation includes an Overview, a QuickStart Guide, a Reference Guide, and a manual that explains how the author created the HTTP server he used for testing tzLib. https://github.com/rwpalmer/tzLib/tree/master/doc{:style="float: right;margin-right: 7px;margin-top: 7px;"}
+tzLib documentation includes an Overview, a QuickStart Guide, a Reference Guide, and a manual that explains how the author created the HTTP server he used for testing tzLib. https://github.com/rwpalmer/tzLib/tree/master/doc
 
 
 ##	Firmware Examples
 tzLib is packaged with three firmware examples. All three are designed to be run with a serial console.
 *	*tzLib101.ino* demonstrates setting local time and displaying local time variables exposed by tzLib and the Particle Time class.
 *	*tzLib201.ino* extends txLib101 by performing a test DST transition and reprinting the local time variables.
-*	*tzLib301.ino* extends tzLib101 in a different direction ... ![Changing Time Zone via Particle Console](tzLib301.png) demonstrating how the device's time zone can be changed via the Particle Console and via the web. To the right, you see the Particle Function and Particle Variables used in tzLib301. Type a valid time zone ID into the Function Arguement field and click "CALL" to change time zone. Click "Get" to display the new variable settings. 
+*	*tzLib301.ino* extends tzLib101 in a different direction ... ![Changing Time Zone via Particle Console](tzLib301.png) {:style="float: right;margin-right: 7px;margin-top: 7px;"}demonstrating how the device's time zone can be changed via the Particle Console and via the web. To the right, you see the Particle Function and Particle Variables used in tzLib301. Type a valid time zone ID into the Function Arguement field and click "CALL" to change time zone. Click "Get" to display the new variable settings. 
 
 Sample "serial console output" is included in the comments at the the bottom of each example's .ino file. tzLib301.ino comments includes HTML that can be used to trigger a time zone change on the device. https://github.com/rwpalmer/tzLib/tree/master/examples
 
